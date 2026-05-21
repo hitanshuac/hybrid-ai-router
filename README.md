@@ -177,16 +177,8 @@ graph TD
         Step4 --> Step5[5. Admission Control Heuristic]
     end
     
-    Step5 --> Groq{Groq Tier 1}
-    Groq -- Success --> Return[Client Response]
-    Groq -- Fail / Bypass --> OR{OpenRouter Tier 2}
-    OR -- Success --> Return
-    OR -- Fail / Bypass --> NV{NVIDIA NIM Tier 3}
-    NV -- Success --> Return
-    NV -- Fail / Bypass --> Gemini{Gemini Flash Tier 4}
-    Gemini -- Success --> Return
-    Gemini -- Fail / Bypass --> Ollama[Local Ollama Tier 5]
-    Ollama --> Return
+    Step5 --> Cascade[9-Tier Cloud Cascade Engine]
+    Cascade --> Return[Client Response]
     
     Return --> Telemetry[DuckDB Telemetry Engine]
 ```

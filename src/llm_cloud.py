@@ -10,8 +10,7 @@ from tenacity import (
 )
 from src.config import (
     GROQ_API_KEYS, OPENROUTER_API_KEYS, NVIDIA_API_KEYS, GEMINI_API_KEYS,
-    PRIMARY_CLOUD_MODEL, SECONDARY_CLOUD_MODEL, SAFETY_NET_MODEL, GEMINI_MODEL,
-    LOCAL_MODEL_PRIMARY, OLLAMA_HOST
+    PRIMARY_CLOUD_MODEL, SECONDARY_CLOUD_MODEL, SAFETY_NET_MODEL, GEMINI_MODEL
 )
 
 logger = logging.getLogger("cloud")
@@ -123,19 +122,4 @@ def query_cloud(prompt=None, messages=None):
                         return resp.json()['choices'][0]['message']['content']
                 except: continue
 
-    # 5. OLLAMA (Offline Safety Net — Local GPU)
-    if est_tokens > MODEL_CONSTRAINTS["ollama"]:
-        logger.warning(f"[PRE-FLIGHT BYPASS] Payload estimated at {est_tokens} tokens exceeds ollama limit of {MODEL_CONSTRAINTS['ollama']}. Bypassing.")
-    else:
-        try:
-            resp = requests.post(
-                f"{OLLAMA_HOST}/api/chat",
-                json={"model": LOCAL_MODEL_PRIMARY, "messages": msg_payload, "stream": False},
-                timeout=60
-            )
-            if resp.status_code == 200:
-                return resp.json()['message']['content']
-        except:
-            pass
-
-    raise CloudExhaustedException("All providers failed (cloud + local).")
+    raise CloudExhaustedException("All cloud providers failed.")

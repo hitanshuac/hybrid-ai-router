@@ -1,5 +1,5 @@
 """
-Hybrid AI Router — 10-Tier Cascade Engine
+Hybrid AI Router — 9-Tier Cascade Engine
 ==========================================
 Strict fallback waterfall using async HTTP clients.
 Integrates SRE Centipede Guardrails (circuit breaker + token preflight).
@@ -12,9 +12,8 @@ Tier Map:
   5. OpenRouter (Llama-3-8B-Free) 8k ctx
   6. OpenRouter (Phi-3-128k-Free) 128k ctx ← HIGH CONTEXT
   7. NVIDIA NIM (Llama-3)         4k ctx
-  8. Local Ollama (Llama3.1)      8k ctx
-  9. Local Ollama (Qwen2.5-Coder) 8k ctx
- 10. Local Ollama (Mistral-Nemo)  8k ctx
+  8. NVIDIA NIM (Mistral-Nemo)    8k ctx
+  9. NVIDIA NIM (Qwen-2.5-72B)    8k ctx
 
 v3.0.0 — Offsite Deployment Edition
 """
@@ -205,7 +204,7 @@ def apply_sliding_window(messages: list, max_window: int = MAX_WINDOW_SIZE) -> t
 
 
 # ============================================================
-# ASYNC CASCADE ENGINE — 10-Tier Waterfall
+# ASYNC CASCADE ENGINE — 9-Tier Waterfall
 # ============================================================
 async def _call_openai_format(
     client: httpx.AsyncClient, tier_def: dict, messages: list, api_key: str
@@ -367,12 +366,12 @@ def classify_and_route(prompt, image_data=None, messages=None):
         # === Step 5: Preflight Token Check (Centipede Guardrail) ===
         eligible = get_eligible_tiers(compact_tokens)
 
-        # === Step 6: 10-Tier Cascade ===
+        # === Step 6: 9-Tier Cascade ===
         response, tier_label = cascade_sync(working, eligible)
 
         if response is None:
             return (
-                "All 10 tiers exhausted. Check API keys and Ollama availability.",
+                "All 9 tiers exhausted. Check API keys and cloud endpoints.",
                 "ALL_EXHAUSTED",
                 compaction_metrics,
             )

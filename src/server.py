@@ -555,7 +555,7 @@ def get_dashboard(request: Request):
             <div class="header">
                 <div class="status-pill"><span class="dot"></span> System Active</div>
                 <h1>Hybrid AI Router</h1>
-                <p class="subtitle">10-Tier SRE Routing Engine</p>
+                <p class="subtitle">9-Tier SRE Routing Engine</p>
             </div>
 
             <!-- Tabs Navigation -->
