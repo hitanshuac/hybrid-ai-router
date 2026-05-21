@@ -27,8 +27,7 @@ import asyncio
 from typing import Optional, Tuple, Dict, Any, List
 
 from src.config import (
-    GROQ_API_KEYS, OPENROUTER_API_KEYS, NVIDIA_API_KEYS, GEMINI_API_KEYS,
-    OLLAMA_HOST,
+    GROQ_API_KEYS, OPENROUTER_API_KEYS, NVIDIA_API_KEYS, GEMINI_API_KEYS
 )
 from src.circuit_breaker import (
     estimate_tokens_from_messages,
