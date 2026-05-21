@@ -10,7 +10,7 @@ from typing import List, Dict, Any, Optional, Union
 
 from src.router import classify_and_route
 from src.health import provider_statuses, stats, health_ping_loop
-from src.bot import init_webhook_bot, process_telegram_update, shutdown_bot
+
 from src.circuit_breaker import get_circuit_status
 
 logger = logging.getLogger("server")
@@ -78,24 +78,17 @@ def _record_compaction_metrics(metrics: dict, latency: float, tier: str):
 _init_metrics_db()
 
 
-# --- STARTUP: Launch background health pings + Telegram webhook ---
+# --- STARTUP: Launch background health pings ---
 @app.on_event("startup")
 async def startup_event():
+    # Start the async background health checker
     asyncio.create_task(health_ping_loop())
     logger.info("Background health monitor started.")
-
-    # Initialize Telegram webhook bot if WEBHOOK_BASE_URL is configured
-    webhook_base = os.environ.get("WEBHOOK_BASE_URL", "").strip()
-    if webhook_base:
-        await init_webhook_bot(webhook_base)
-        logger.info(f"[TELEGRAM] Webhook bot initialized at {webhook_base}")
-    else:
-        logger.info("[TELEGRAM] WEBHOOK_BASE_URL not set — bot disabled (set it to enable).")
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    await shutdown_bot()
+    pass
     logger.info("Graceful shutdown complete.")
 
 
@@ -606,7 +599,7 @@ def get_dashboard(request: Request):
                 </div>
             </div>
 
-            <footer>End-to-End Resilience &bull; Mode: Webhook &bull; Private Space</footer>
+            <footer>End-to-End Resilience &bull; Private Space</footer>
         </div>
 
         <script>
@@ -971,20 +964,6 @@ async def health_circuits():
     """Circuit breaker state for all tiers."""
     return get_circuit_status()
 
-
-# ============================================================
-# TELEGRAM WEBHOOK RECEIVER
-# ============================================================
-@app.post("/api/telegram/webhook")
-async def telegram_webhook(request: Request):
-    """Receive Telegram updates via webhook (replaces polling)."""
-    try:
-        update_data = await request.json()
-        success = await process_telegram_update(update_data)
-        return {"ok": success}
-    except Exception as e:
-        logger.error(f"[TELEGRAM WEBHOOK] Error: {e}")
-        return JSONResponse(status_code=500, content={"error": str(e)})
 
 
 @app.get("/api/v1/metrics/efficiency")

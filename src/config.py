@@ -64,16 +64,9 @@ SECONDARY_CLOUD_MODEL = "google/gemma-4-31b-it:free"
 SAFETY_NET_MODEL = "meta/llama-3.1-8b-instruct"
 GEMINI_MODEL = "gemini-1.5-flash"
 
-# Telegram Bot
-TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
-if not TELEGRAM_BOT_TOKEN:
-    _telegram_keys = get_secrets_list("telegram_bot_token")
-    if _telegram_keys:
-        TELEGRAM_BOT_TOKEN = _telegram_keys[0]
-
 # Startup log — show key counts (never values) for observability
 logger.info(
     f"[CONFIG] Keys loaded — Groq:{len(GROQ_API_KEYS)} "
     f"OpenRouter:{len(OPENROUTER_API_KEYS)} NVIDIA:{len(NVIDIA_API_KEYS)} "
-    f"Gemini:{len(GEMINI_API_KEYS)} Telegram:{'✅' if TELEGRAM_BOT_TOKEN else '❌'}"
+    f"Gemini:{len(GEMINI_API_KEYS)}"
 )

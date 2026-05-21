@@ -32,7 +32,6 @@ graph TD
 
     %% Frontends
     subgraph Client ["Client Interfaces"]
-        TG["📱 Telegram Webhook Bot"]:::frontend
         SPA["💻 SPA Web Console (Chat & Dashboard)"]:::frontend
     end
 
@@ -77,7 +76,6 @@ graph TD
     end
 
     %% Wiring
-    TG -->|"POST /api/telegram/webhook"| API
     SPA -->|"GET / "| API
     SPA -->|"POST /v1/chat/completions "| API
     SPA -->|"GET /api/v1/metrics/efficiency "| API
