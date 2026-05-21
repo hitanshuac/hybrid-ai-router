@@ -100,6 +100,7 @@ async def init_webhook_bot(webhook_url: str) -> Application:
 
         # Initialize the bot (connects to Telegram API)
         await _bot_app.initialize()
+        await _bot_app.start()
 
         # Set the webhook URL with Telegram
         full_webhook_url = f"{webhook_url}/api/telegram/webhook"
@@ -139,6 +140,7 @@ async def shutdown_bot():
     if _bot_app:
         try:
             await _bot_app.bot.delete_webhook()
+            await _bot_app.stop()
             await _bot_app.shutdown()
             logger.info("[TELEGRAM] Bot shutdown complete.")
         except Exception as e:
