@@ -99,84 +99,19 @@ async def shutdown_event():
     logger.info("Graceful shutdown complete.")
 
 
-# --- PREMIUM DASHBOARD ---
+# --- PREMIUM DASHBOARD & WEB CHAT CLIENT ---
 @app.get("/", response_class=HTMLResponse)
 @app.get("/dashboard", response_class=HTMLResponse)
-def get_dashboard():
+def get_dashboard(request: Request):
     from src.config import GROQ_API_KEYS, OPENROUTER_API_KEYS, NVIDIA_API_KEYS
 
-    # Fetch initial context compaction telemetry from DuckDB
-    tokens_saved = 0
-    compaction_ratio = 0.0
-    active_tier = "N/A"
-    try:
-        con = duckdb.connect(_DB_PATH, read_only=True)
-        row = con.execute("""
-            SELECT 
-                COALESCE(SUM(tokens_saved), 0) AS total_saved,
-                COALESCE(ROUND(AVG(savings_pct), 1), 0.0) AS avg_ratio
-            FROM compaction_log
-        """).fetchone()
-        
-        last_tier_row = con.execute("""
-            SELECT tier FROM compaction_log ORDER BY id DESC LIMIT 1
-        """).fetchone()
-        
-        con.close()
-        if row:
-            tokens_saved = int(row[0])
-            compaction_ratio = float(row[1])
-        if last_tier_row:
-            active_tier = last_tier_row[0]
-    except Exception as e:
-        logger.warning(f"[TELEMETRY] Failed to fetch dashboard telemetry: {e}")
-
-    tokens_saved_str = f"{tokens_saved:,}"
-    compaction_ratio_str = f"{compaction_ratio:.1f}%"
-
-
-    # Build provider status cards
-    provider_cards = ""
-    for pid, ps in provider_statuses.items():
-        if ps.status == "up":
-            badge_bg = "rgba(34, 197, 94, 0.2)"
-            badge_color = "#4ade80"
-            icon = "&#x2705;"
-            status_text = f"{ps.latency_ms}ms"
-        elif ps.status == "down":
-            badge_bg = "rgba(239, 68, 68, 0.2)"
-            badge_color = "#f87171"
-            icon = "&#x274C;"
-            status_text = ps.error or "Down"
-        else:
-            badge_bg = "rgba(234, 179, 8, 0.2)"
-            badge_color = "#fbbf24"
-            icon = "&#x23F3;"
-            status_text = "Checking..."
-
-        ago = ""
-        if ps.last_checked > 0:
-            secs = int(time.time() - ps.last_checked)
-            if secs < 60:
-                ago = f"{secs}s ago"
-            else:
-                ago = f"{secs // 60}m ago"
-
-        provider_cards += f"""
-            <div class="provider-card">
-                <div class="provider-header">
-                    <span class="provider-icon">{icon}</span>
-                    <span class="provider-name">{ps.name}</span>
-                </div>
-                <div class="provider-status" style="background:{badge_bg}; color:{badge_color};">{status_text}</div>
-                <div class="provider-ago">{ago}</div>
-            </div>
-        """
-
-    # Stats
+    # Fetch initial stats
     success_rate = 0
     if stats.total_requests > 0:
         success_rate = round((stats.successful / stats.total_requests) * 100, 1)
+
+    # Determine default active tab based on path
+    default_tab = "dashboard" if request.url.path.endswith("/dashboard") else "chat"
 
     html_content = f"""
     <!DOCTYPE html>
@@ -184,7 +119,7 @@ def get_dashboard():
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Hybrid AI Router | Dashboard</title>
+        <title>Hybrid AI Router | Console</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
         <style>
@@ -210,7 +145,7 @@ def get_dashboard():
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                padding: 2rem;
+                padding: 1.5rem;
             }}
             .dashboard {{
                 width: 100%;
@@ -218,7 +153,7 @@ def get_dashboard():
             }}
             .header {{
                 text-align: center;
-                margin-bottom: 2rem;
+                margin-bottom: 1.5rem;
             }}
             .status-pill {{
                 display: inline-flex;
@@ -232,7 +167,7 @@ def get_dashboard():
                 font-weight: 600;
                 letter-spacing: 0.05em;
                 text-transform: uppercase;
-                margin-bottom: 1rem;
+                margin-bottom: 0.75rem;
             }}
             .status-pill .dot {{
                 width: 8px;
@@ -259,18 +194,61 @@ def get_dashboard():
                 font-size: 0.9rem;
             }}
 
+            /* Tabs Navigation */
+            .tabs-nav {{
+                display: flex;
+                background: rgba(255, 255, 255, 0.03);
+                padding: 0.25rem;
+                border-radius: 0.75rem;
+                border: 1px solid var(--border);
+                margin-bottom: 1.5rem;
+                gap: 0.25rem;
+            }}
+            .tab-btn {{
+                flex: 1;
+                background: transparent;
+                border: none;
+                color: var(--text-muted);
+                padding: 0.65rem 1rem;
+                border-radius: 0.5rem;
+                font-size: 0.85rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.4rem;
+            }}
+            .tab-btn:hover {{
+                color: var(--text);
+                background: rgba(255, 255, 255, 0.02);
+            }}
+            .tab-btn.active {{
+                color: var(--bg);
+                background: var(--primary);
+            }}
+
+            /* Tab Panels */
+            .tab-panel {{
+                display: none;
+            }}
+            .tab-panel.active {{
+                display: block;
+            }}
+
             /* Stats Row */
             .stats-row {{
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
-                gap: 1rem;
-                margin-bottom: 1.5rem;
+                gap: 0.75rem;
+                margin-bottom: 1.25rem;
             }}
             .stat-card {{
                 background: var(--card);
                 border: 1px solid var(--border);
-                border-radius: 1rem;
-                padding: 1.25rem;
+                border-radius: 0.875rem;
+                padding: 1rem;
                 text-align: center;
                 transition: transform 0.2s, box-shadow 0.2s;
             }}
@@ -279,26 +257,26 @@ def get_dashboard():
                 box-shadow: 0 8px 25px rgba(0,0,0,0.3);
             }}
             .stat-val {{
-                font-size: 1.75rem;
+                font-size: 1.5rem;
                 font-weight: 700;
                 color: var(--primary);
                 line-height: 1;
                 margin-bottom: 0.35rem;
             }}
             .stat-label {{
-                font-size: 0.75rem;
+                font-size: 0.7rem;
                 color: var(--text-muted);
                 text-transform: uppercase;
                 letter-spacing: 0.05em;
             }}
 
-            /* Section */
+            /* Section Header */
             .section-title {{
                 font-size: 0.75rem;
                 color: var(--text-muted);
                 text-transform: uppercase;
                 letter-spacing: 0.1em;
-                margin-bottom: 0.75rem;
+                margin-bottom: 0.6rem;
                 padding-left: 0.25rem;
             }}
 
@@ -307,18 +285,17 @@ def get_dashboard():
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 gap: 0.75rem;
-                margin-bottom: 1.5rem;
+                margin-bottom: 1.25rem;
             }}
             .provider-card {{
                 background: var(--card);
                 border: 1px solid var(--border);
                 border-radius: 0.875rem;
                 padding: 1rem;
-                transition: transform 0.2s, box-shadow 0.2s;
+                transition: transform 0.2s;
             }}
             .provider-card:hover {{
                 transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(0,0,0,0.3);
             }}
             .provider-header {{
                 display: flex;
@@ -349,7 +326,7 @@ def get_dashboard():
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 gap: 0.75rem;
-                margin-bottom: 2rem;
+                margin-bottom: 1.5rem;
             }}
             .key-card {{
                 background: var(--card);
@@ -359,7 +336,7 @@ def get_dashboard():
                 text-align: center;
             }}
             .key-val {{
-                font-size: 1.5rem;
+                font-size: 1.35rem;
                 font-weight: 700;
                 color: var(--accent);
             }}
@@ -371,11 +348,152 @@ def get_dashboard():
                 margin-top: 0.2rem;
             }}
 
+            /* ==========================================
+               CHAT CONSOLE STYLES
+               ========================================== */
+            .chat-box {{
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 1rem;
+                display: flex;
+                flex-direction: column;
+                height: 480px;
+                overflow: hidden;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            }}
+            .chat-messages {{
+                flex: 1;
+                overflow-y: auto;
+                padding: 1.25rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.85rem;
+                background: rgba(0,0,0,0.15);
+            }}
+            .msg {{
+                display: flex;
+                flex-direction: column;
+                max-width: 85%;
+                animation: fadeInMessage 0.25s ease-out forwards;
+            }}
+            @keyframes fadeInMessage {{
+                from {{ opacity: 0; transform: translateY(5px); }}
+                to {{ opacity: 1; transform: translateY(0); }}
+            }}
+            .msg.user {{
+                align-self: flex-end;
+                align-items: flex-end;
+            }}
+            .msg.assistant {{
+                align-self: flex-start;
+                align-items: flex-start;
+            }}
+            .bubble {{
+                padding: 0.75rem 1rem;
+                border-radius: 0.875rem;
+                font-size: 0.9rem;
+                line-height: 1.45;
+                word-break: break-word;
+                white-space: pre-wrap;
+            }}
+            .msg.user .bubble {{
+                background: var(--primary);
+                color: #042f2e;
+                font-weight: 500;
+                border-bottom-right-radius: 0.25rem;
+            }}
+            .msg.assistant .bubble {{
+                background: var(--card);
+                color: var(--text);
+                border-bottom-left-radius: 0.25rem;
+                border: 1px solid var(--border);
+            }}
+            .msg-meta {{
+                font-size: 0.65rem;
+                color: var(--text-muted);
+                margin-top: 0.25rem;
+                padding: 0 0.2rem;
+            }}
+            .input-area {{
+                display: flex;
+                padding: 0.75rem;
+                background: var(--card);
+                border-top: 1px solid var(--border);
+                gap: 0.5rem;
+            }}
+            .chat-input {{
+                flex: 1;
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 0.6rem;
+                color: var(--text);
+                padding: 0.65rem 0.85rem;
+                font-family: inherit;
+                font-size: 0.9rem;
+                outline: none;
+                resize: none;
+                height: 42px;
+                line-height: 1.3;
+            }}
+            .chat-input:focus {{
+                border-color: var(--primary);
+            }}
+            .send-btn {{
+                background: var(--primary);
+                color: var(--bg);
+                border: none;
+                border-radius: 0.6rem;
+                padding: 0 1.25rem;
+                font-weight: 700;
+                font-size: 0.85rem;
+                cursor: pointer;
+                transition: opacity 0.2s, background 0.2s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }}
+            .send-btn:hover {{
+                opacity: 0.9;
+            }}
+            .send-btn:disabled {{
+                background: var(--card);
+                color: var(--text-muted);
+                cursor: not-allowed;
+            }}
+
+            /* Typist Indicator */
+            .typing-indicator {{
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                padding: 0.5rem 0.85rem;
+                background: var(--card);
+                border: 1px solid var(--border);
+                border-radius: 0.875rem;
+                align-self: flex-start;
+                margin-bottom: 0.5rem;
+            }}
+            .typing-indicator span {{
+                width: 6px;
+                height: 6px;
+                background-color: var(--primary);
+                border-radius: 50%;
+                display: inline-block;
+                animation: bounce 1.4s infinite ease-in-out both;
+            }}
+            .typing-indicator span:nth-child(1) {{ animation-delay: -0.32s; }}
+            .typing-indicator span:nth-child(2) {{ animation-delay: -0.16s; }}
+            @keyframes bounce {{
+                0%, 80%, 100% {{ transform: scale(0); }}
+                40% {{ transform: scale(1.0); }}
+            }}
+
             footer {{
                 text-align: center;
                 color: var(--text-muted);
                 font-size: 0.75rem;
                 opacity: 0.6;
+                margin-top: 1.5rem;
             }}
 
             /* Auto-refresh animation */
@@ -391,104 +509,329 @@ def get_dashboard():
                 100% {{ background-position: 200% center; }}
             }}
         </style>
-        <meta http-equiv="refresh" content="30">
     </head>
     <body>
         <div class="dashboard">
             <div class="header">
                 <div class="status-pill"><span class="dot"></span> System Active</div>
                 <h1>Hybrid AI Router</h1>
-                <p class="subtitle">Minimalist Waterfall Engine v2.4.0</p>
+                <p class="subtitle">10-Tier SRE Routing Engine</p>
             </div>
 
-            <div class="refresh-bar"></div>
-
-            <div class="section-title">Request Statistics</div>
-            <div class="stats-row">
-                <div class="stat-card">
-                    <div class="stat-val">{stats.total_requests}</div>
-                    <div class="stat-label">Total Requests</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-val">{success_rate}%</div>
-                    <div class="stat-label">Success Rate</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-val">{stats.last_latency:.1f}s</div>
-                    <div class="stat-label">Last Latency</div>
-                </div>
+            <!-- Tabs Navigation -->
+            <div class="tabs-nav">
+                <button id="btn-chat" class="tab-btn {'active' if default_tab == 'chat' else ''}" onclick="switchTab('chat')">💬 Chat Console</button>
+                <button id="btn-dashboard" class="tab-btn {'active' if default_tab == 'dashboard' else ''}" onclick="switchTab('dashboard')">📊 SRE Dashboard</button>
             </div>
 
-            <div class="section-title">Compaction & Telemetry</div>
-            <div class="stats-row">
-                <div class="stat-card">
-                    <div id="metric-tokens-saved" class="stat-val">{tokens_saved_str}</div>
-                    <div class="stat-label">Tokens Saved</div>
-                </div>
-                <div class="stat-card">
-                    <div id="metric-compaction-ratio" class="stat-val">{compaction_ratio_str}</div>
-                    <div class="stat-label">Compaction Ratio</div>
-                </div>
-                <div class="stat-card">
-                    <div id="metric-active-tier" class="stat-val" style="color: var(--accent);">{active_tier}</div>
-                    <div class="stat-label">Active Tier</div>
+            <!-- ==========================================
+                 TAB 1: CHAT PANEL
+                 ========================================== -->
+            <div id="panel-chat" class="tab-panel {'active' if default_tab == 'chat' else ''}">
+                <div class="chat-box">
+                    <div id="chat-messages" class="chat-messages">
+                        <div class="msg assistant">
+                            <div class="bubble">Welcome! I am your offsite Hybrid AI Router. How can I help you today?</div>
+                            <div class="msg-meta">served by: system</div>
+                        </div>
+                    </div>
+                    <div id="typing-container"></div>
+                    <div class="input-area">
+                        <textarea id="chat-input" class="chat-input" placeholder="Type your message... (Enter to send)" onkeydown="handleEnter(event)"></textarea>
+                        <button id="send-btn" class="send-btn" onclick="sendMessage()">Send</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="section-title">Provider Health</div>
-            <div class="provider-grid">
-                {provider_cards}
+            <!-- ==========================================
+                 TAB 2: DASHBOARD PANEL
+                 ========================================== -->
+            <div id="panel-dashboard" class="tab-panel {'active' if default_tab == 'dashboard' else ''}">
+                <div class="refresh-bar"></div>
+
+                <div class="section-title">Request Statistics</div>
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div id="metric-total-requests" class="stat-val">{stats.total_requests}</div>
+                        <div class="stat-label">Total Requests</div>
+                    </div>
+                    <div class="stat-card">
+                        <div id="metric-success-rate" class="stat-val">{success_rate}%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div id="metric-last-latency" class="stat-val">{stats.last_latency:.1f}s</div>
+                        <div class="stat-label">Last Latency</div>
+                    </div>
+                </div>
+
+                <div class="section-title">Compaction & Telemetry</div>
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div id="metric-tokens-saved" class="stat-val">Loading...</div>
+                        <div class="stat-label">Tokens Saved</div>
+                    </div>
+                    <div class="stat-card">
+                        <div id="metric-compaction-ratio" class="stat-val">Loading...</div>
+                        <div class="stat-label">Compaction Ratio</div>
+                    </div>
+                    <div class="stat-card">
+                        <div id="metric-active-tier" class="stat-val" style="color: var(--accent);">Loading...</div>
+                        <div class="stat-label">Active Tier</div>
+                    </div>
+                </div>
+
+                <div class="section-title">Provider Health</div>
+                <div id="provider-grid" class="provider-grid">
+                    <!-- Loaded dynamically via JS polling -->
+                    <div class="provider-card" style="text-align: center; grid-column: span 2;">
+                        <span class="provider-name">Initializing telemetry data...</span>
+                    </div>
+                </div>
+
+                <div class="section-title">Key Pool</div>
+                <div class="key-grid">
+                    <div class="key-card">
+                        <div class="key-val">{len(GROQ_API_KEYS)}</div>
+                        <div class="key-label">Groq Keys</div>
+                    </div>
+                    <div class="key-card">
+                        <div class="key-val">{len(OPENROUTER_API_KEYS)}</div>
+                        <div class="key-label">OpenRouter Keys</div>
+                    </div>
+                    <div class="key-card">
+                        <div class="key-val">{len(NVIDIA_API_KEYS)}</div>
+                        <div class="key-label">NVIDIA Keys</div>
+                    </div>
+                </div>
             </div>
 
-            <div class="section-title">Key Pool</div>
-            <div class="key-grid">
-                <div class="key-card">
-                    <div class="key-val">{len(GROQ_API_KEYS)}</div>
-                    <div class="key-label">Groq Keys</div>
-                </div>
-                <div class="key-card">
-                    <div class="key-val">{len(OPENROUTER_API_KEYS)}</div>
-                    <div class="key-label">OpenRouter Keys</div>
-                </div>
-                <div class="key-card">
-                    <div class="key-val">{len(NVIDIA_API_KEYS)}</div>
-                    <div class="key-label">NVIDIA Keys</div>
-                </div>
-            </div>
-
-            <footer>End-to-End Resilience &bull; Port 8000 &bull; Auto-refreshes every 30s</footer>
+            <footer>End-to-End Resilience &bull; Mode: Webhook &bull; Private Space</footer>
         </div>
+
         <script>
-            async function updateCompactionMetrics() {{
+            // Chat history tracking
+            const chatHistory = [
+                {{ role: "assistant", content: "Welcome! I am your offsite Hybrid AI Router. How can I help you today?" }}
+            ];
+            let isSending = false;
+
+            // Tab switcher
+            function switchTab(tabId) {{
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+                
+                document.getElementById('btn-' + tabId).classList.add('active');
+                document.getElementById('panel-' + tabId).classList.add('active');
+
+                // If switching to dashboard, update metrics immediately
+                if (tabId === 'dashboard') {{
+                    fetchTelemetry();
+                }}
+            }}
+
+            function handleEnter(e) {{
+                if (e.key === 'Enter' && !e.shiftKey) {{
+                    e.preventDefault();
+                    sendMessage();
+                }}
+            }}
+
+            async function sendMessage() {{
+                const inputEl = document.getElementById('chat-input');
+                const text = inputEl.value.trim();
+                if (!text || isSending) return;
+
+                isSending = true;
+                inputEl.value = '';
+                document.getElementById('send-btn').disabled = true;
+
+                // 1. Render User Message
+                renderMessage("user", text, "you");
+                chatHistory.push({{ role: "user", content: text }});
+
+                // 2. Render Typing Indicator
+                showTypingIndicator();
+
                 try {{
-                    const response = await fetch('/api/v1/metrics/efficiency', {{
-                        headers: {{ 'Accept': 'application/json' }}
+                    // Post to local chat completions endpoint
+                    const response = await fetch('/v1/chat/completions', {{
+                        method: 'POST',
+                        headers: {{ 'Content-Type': 'application/json' }},
+                        body: JSON.stringify({{
+                            model: "hybrid-router",
+                            messages: chatHistory
+                        }})
                     }});
+
+                    hideTypingIndicator();
+
                     if (response.ok) {{
                         const data = await response.json();
+                        const content = data.choices[0].message.content;
+                        
+                        // Parse out model tag if it exists in the response
+                        let displayContent = content;
+                        let providerName = data.model || "Router Cascade";
+
+                        // Remove tag prefix if we show it in meta instead
+                        if (content.startsWith('[🌊 Cascade]')) {{
+                            displayContent = content.substring(12).trim();
+                            providerName = "Waterfall Cascade";
+                        }} else if (content.startsWith('[⚠️ Error]')) {{
+                            displayContent = content.substring(10).trim();
+                            providerName = "Cascade System Error";
+                        }}
+
+                        renderMessage("assistant", displayContent, providerName);
+                        chatHistory.push({{ role: "assistant", content: content }});
+                    }} else {{
+                        const errData = await response.json();
+                        renderMessage("assistant", "Error: " + (errData.error || "Failed to process completion request."), "system error");
+                    }}
+                }} catch (err) {{
+                    hideTypingIndicator();
+                    renderMessage("assistant", "Connection Error: Failed to contact the router endpoint.", "connection failure");
+                    console.error(err);
+                }} finally {{
+                    isSending = false;
+                    document.getElementById('send-btn').disabled = false;
+                    inputEl.focus();
+                }}
+            }}
+
+            function renderMessage(role, text, meta) {{
+                const msgsContainer = document.getElementById('chat-messages');
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `msg ${{role}}`;
+                msgDiv.innerHTML = `
+                    <div class="bubble">${{escapeHtml(text)}}</div>
+                    <div class="msg-meta">served by: ${{escapeHtml(meta)}}</div>
+                `;
+                msgsContainer.appendChild(msgDiv);
+                msgsContainer.scrollTop = msgsContainer.scrollHeight;
+            }}
+
+            function showTypingIndicator() {{
+                const container = document.getElementById('typing-container');
+                container.innerHTML = `
+                    <div class="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                `;
+                const msgsContainer = document.getElementById('chat-messages');
+                msgsContainer.scrollTop = msgsContainer.scrollHeight;
+            }}
+
+            function hideTypingIndicator() {{
+                document.getElementById('typing-container').innerHTML = '';
+            }}
+
+            function escapeHtml(text) {{
+                const map = {{
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                }};
+                return text.replace(/[&<>"']/g, function(m) {{ return map[m]; }});
+            }}
+
+            // AJAX Telemetry Fetching (SPA style)
+            async function fetchTelemetry() {{
+                try {{
+                    // Fetch Compaction & General Stats
+                    const effResponse = await fetch('/api/v1/metrics/efficiency', {{
+                        headers: {{ 'Accept': 'application/json' }}
+                    }});
+                    if (effResponse.ok) {{
+                        const data = await effResponse.json();
                         const summary = data.summary;
                         const recent = data.recent;
+
+                        document.getElementById('metric-total-requests').innerText = summary.total_requests || 0;
                         
-                        // Format tokens with commas
-                        const totalSaved = summary.total_tokens_saved;
-                        document.getElementById('metric-tokens-saved').innerText = Number(totalSaved).toLocaleString();
+                        let successRate = 0;
+                        if (summary.total_requests > 0) {{
+                            successRate = ((summary.successful_requests / summary.total_requests) * 100).toFixed(1);
+                        }}
+                        document.getElementById('metric-success-rate').innerText = successRate + '%';
+                        document.getElementById('metric-last-latency').innerText = (summary.avg_latency || 0).toFixed(1) + 's';
+
+                        document.getElementById('metric-tokens-saved').innerText = Number(summary.total_tokens_saved || 0).toLocaleString();
+                        document.getElementById('metric-compaction-ratio').innerText = (summary.avg_savings_pct || 0.0).toFixed(1) + '%';
                         
-                        // Format compaction ratio
-                        const avgRatio = summary.avg_savings_pct;
-                        document.getElementById('metric-compaction-ratio').innerText = avgRatio.toFixed(1) + '%';
-                        
-                        // Set active tier from the most recent record
                         if (recent && recent.length > 0) {{
                             document.getElementById('metric-active-tier').innerText = recent[0].tier;
                         }} else {{
                             document.getElementById('metric-active-tier').innerText = 'N/A';
                         }}
                     }}
+
+                    // Fetch Provider Statuses
+                    const provResponse = await fetch('/health/providers');
+                    if (provResponse.ok) {{
+                        const providers = await provResponse.json();
+                        let gridHtml = '';
+                        
+                        for (const key in providers) {{
+                            const ps = providers[key];
+                            let badgeBg = 'rgba(234, 179, 8, 0.2)';
+                            let badgeColor = '#fbbf24';
+                            let icon = '&#x23F3;';
+                            let statusText = 'Checking...';
+
+                            if (ps.status === 'up') {{
+                                badgeBg = 'rgba(34, 197, 94, 0.2)';
+                                badgeColor = '#4ade80';
+                                icon = '&#x2705;';
+                                statusText = ps.latency_ms + 'ms';
+                            }} else if (ps.status === 'down') {{
+                                badgeBg = 'rgba(239, 68, 68, 0.2)';
+                                badgeColor = '#f87171';
+                                icon = '&#x274C;';
+                                statusText = ps.error || 'Down';
+                            }}
+
+                            let ago = '';
+                            if (ps.last_checked > 0) {{
+                                const secs = Math.floor(Date.now() / 1000 - ps.last_checked);
+                                ago = secs < 60 ? secs + 's ago' : Math.floor(secs / 60) + 'm ago';
+                            }}
+
+                            gridHtml += `
+                                <div class="provider-card">
+                                    <div class="provider-header">
+                                        <span class="provider-icon">${{icon}}</span>
+                                        <span class="provider-name">${{ps.name}}</span>
+                                    </div>
+                                    <div class="provider-status" style="background:${{badgeBg}}; color:${{badgeColor}};">${{statusText}}</div>
+                                    <div class="provider-ago">${{ago}}</div>
+                                </div>
+                            `;
+                        }}
+                        document.getElementById('provider-grid').innerHTML = gridHtml || '<div class="provider-card" style="text-align: center; grid-column: span 2;"><span class="provider-name">No providers monitored.</span></div>';
+                    }}
                 }} catch (err) {{
-                    console.error('Failed to fetch metrics:', err);
+                    console.error('Error fetching telemetry data:', err);
                 }}
             }}
-            updateCompactionMetrics();
+
+            // Poll every 10 seconds for live updates
+            setInterval(() => {{
+                // Only poll if dashboard panel is currently visible to save resources
+                if (document.getElementById('panel-dashboard').classList.contains('active')) {{
+                    fetchTelemetry();
+                }}
+            }}, 10000);
+
+            // Run initial load
+            if (document.getElementById('panel-dashboard').classList.contains('active')) {{
+                fetchTelemetry();
+            }}
         </script>
     </body>
     </html>

@@ -8,7 +8,9 @@ app_port: 7860
 pinned: false
 ---
 
-# 🚀 Hybrid AI Router: Agentic Pipeline (v2.4.1)
+# 🚀 Hybrid AI Router: Agentic Pipeline (v3.0.0)
+
+![Architecture Diagram](docs/assets/architecture_diagram_v3_0_0.png)
 
 A high-performance, SRE-grade API Gateway and Data Engineering pipeline. This system maximizes cloud resilience through a multi-provider waterfall cascade, enforces strict behavioral personas, and maintains absolute data integrity and token efficiency via a dedicated **Telemetry & Compaction Plane**.
 
@@ -19,8 +21,70 @@ A high-performance, SRE-grade API Gateway and Data Engineering pipeline. This sy
 Built for **Bulletproof Reliability**, the system enforces strict SRE guardrails via the **Agentic Control Plane** and handles payloads through an optimized, zero-overhead execution pipeline.
 
 
-![Architecture Diagram](docs/assets/architecture_diagram_v2_4_1.png)
+```mermaid
+graph TD
+    %% Styling
+    classDef frontend fill:#38bdf8,stroke:#0f172a,stroke-width:2px,color:#0a0e1a;
+    classDef backend fill:#818cf8,stroke:#0f172a,stroke-width:2px,color:#0a0e1a;
+    classDef router fill:#fbbf24,stroke:#0f172a,stroke-width:2px,color:#0a0e1a;
+    classDef db fill:#4ade80,stroke:#0f172a,stroke-width:2px,color:#0a0e1a;
+    classDef provider fill:#1e293b,stroke:#38bdf8,stroke-width:2px,color:#f1f5f9;
 
+    %% Frontends
+    subgraph Client ["Client Interfaces"]
+        TG["📱 Telegram Webhook Bot"]:::frontend
+        SPA["💻 SPA Web Console (Chat & Dashboard)"]:::frontend
+    end
+
+    %% Backend Server
+    subgraph Server ["Hugging Face Space (Port 7860)"]
+        API["⚡ FastAPI Application"]:::backend
+        CB["🛡️ SRE Circuit Breaker & Compaction"]:::backend
+        
+        API --> CB
+        
+        %% Database Layer
+        subgraph Persistence ["Data Layer"]
+            DuckDB[("🦆 DuckDB (Telemetry)")]:::db
+            Chroma[("🧠 ChromaDB (RAG Vector State)")]:::db
+        end
+        CB -.->|"Logs metrics"| DuckDB
+        CB -.->|"Context Search"| Chroma
+        
+        %% Cascade Router
+        subgraph Cascade ["10-Tier Hybrid Cascade Engine"]
+            Tier1["1. Groq (Llama-3-70B)"]:::provider
+            Tier2["2. Groq (Mixtral)"]:::provider
+            Tier3["3. AI Studio (Gemini-1.5-Flash)"]:::provider
+            Tier4["4. OpenRouter (Qwen-2.5-Coder)"]:::provider
+            Tier5["5. OpenRouter (Llama-3-8B-Free)"]:::provider
+            Tier6["6. OpenRouter (Phi-3-128k-Free)"]:::provider
+            Tier7["7. NVIDIA NIM (Llama-3)"]:::provider
+            Tier8["8. Local Ollama (Llama-3.1)"]:::provider
+            Tier9["9. Local Ollama (Qwen2.5-Coder)"]:::provider
+            Tier10["10. Local Ollama (Mistral-Nemo)"]:::provider
+            
+            Tier1 -->|"Fallback"| Tier2
+            Tier2 -->|"Fallback"| Tier3
+            Tier3 -->|"Fallback"| Tier4
+            Tier4 -->|"Fallback"| Tier5
+            Tier5 -->|"Fallback"| Tier6
+            Tier6 -->|"Fallback"| Tier7
+            Tier7 -->|"Fallback"| Tier8
+            Tier8 -->|"Fallback"| Tier9
+            Tier9 -->|"Fallback"| Tier10
+        end
+        
+        CB -->|"Routes Payload"| Cascade
+    end
+
+    %% Wiring
+    TG -->|"POST /api/telegram/webhook"| API
+    SPA -->|"GET / "| API
+    SPA -->|"POST /v1/chat/completions "| API
+    SPA -->|"GET /api/v1/metrics/efficiency "| API
+
+```
 
 ### The 5-Step Compaction & Routing Sequence
 Every request array flowing through the gateway is processed through five immutable stages to eliminate context drift and minimize token wastage:
