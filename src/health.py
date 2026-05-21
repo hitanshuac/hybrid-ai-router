@@ -12,7 +12,7 @@ import requests
 from dataclasses import dataclass, field
 from typing import Dict
 
-from src.config import GROQ_API_KEYS, OPENROUTER_API_KEYS, NVIDIA_API_KEYS, OLLAMA_HOST
+from src.config import GROQ_API_KEYS, OPENROUTER_API_KEYS, NVIDIA_API_KEYS, GEMINI_API_KEYS, OLLAMA_HOST
 
 logger = logging.getLogger("health")
 
@@ -33,6 +33,7 @@ class ProviderStatus:
 provider_statuses: Dict[str, ProviderStatus] = {
     "groq": ProviderStatus(name="Groq", url="https://api.groq.com/openai/v1/models"),
     "openrouter": ProviderStatus(name="OpenRouter", url="https://openrouter.ai/api/v1/models"),
+    "gemini": ProviderStatus(name="Gemini Flash", url="https://generativelanguage.googleapis.com/v1beta/openai/models"),
     "nvidia": ProviderStatus(name="NVIDIA NIM", url="https://integrate.api.nvidia.com/v1/models"),
     "ollama": ProviderStatus(name="Ollama", url=f"{OLLAMA_HOST}/api/tags"),
 }
@@ -90,6 +91,7 @@ def run_health_check():
 
     _ping_provider("groq", provider_statuses["groq"], GROQ_API_KEYS)
     _ping_provider("openrouter", provider_statuses["openrouter"], OPENROUTER_API_KEYS)
+    _ping_provider("gemini", provider_statuses["gemini"], GEMINI_API_KEYS)
     _ping_provider("nvidia", provider_statuses["nvidia"], NVIDIA_API_KEYS)
     _ping_provider("ollama", provider_statuses["ollama"], [])  # Ollama needs no key
 

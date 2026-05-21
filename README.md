@@ -1,3 +1,13 @@
+---
+title: Hybrid AI Router
+emoji: 🌊
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # 🚀 Hybrid AI Router: Agentic Pipeline (v2.4.1)
 
 A high-performance, SRE-grade API Gateway and Data Engineering pipeline. This system maximizes cloud resilience through a multi-provider waterfall cascade, enforces strict behavioral personas, and maintains absolute data integrity and token efficiency via a dedicated **Telemetry & Compaction Plane**.

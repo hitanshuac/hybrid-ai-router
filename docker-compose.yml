@@ -1,71 +1,130 @@
-version: '3.8'
+# ============================================================
+# Hybrid AI Router — Self-Hosted Docker Compose (Track B)
+# ============================================================
+# Use this for Oracle Cloud Always Free or any VPS.
+# For HF Spaces, push the repo directly — no docker-compose needed.
+#
+# Deploy: docker-compose up -d
+# Verify: curl http://localhost:8000/health
 
 services:
-  # --- THE BRAIN: Hybrid AI Router ---
+  # ============================================================
+  # SERVICE A: FastAPI 10-Tier Router (Python 3.11)
+  # ============================================================
   hybrid-router:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: hybrid-ai-router
     restart: always
+    ports:
+      - "8000:7860"
     environment:
-      - OLLAMA_HOST=http://host.docker.internal:11434
+      - OLLAMA_HOST=http://ollama:11434
+      - PYTHONUNBUFFERED=1
+      - PORT=7860
+      # Set your Telegram webhook URL if deploying with bot
+      # - WEBHOOK_BASE_URL=https://your-server-ip:8000
+    env_file:
+      - .env
     volumes:
-      - ./secrets:/app/secrets
-    stdin_open: true
-    tty: true
-    networks:
-      - ai-network
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-    healthcheck:
-      test: ["CMD", "python", "-c", "import socket; s = socket.socket(socket.AF_INET, socket.SOCK_STREAM); s.connect(('localhost', 8000))"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  # --- MOBILE ACCESS: Telegram Bot ---
-  hybrid-bot:
-    build: .
-    container_name: hybrid-ai-bot
-    restart: always
-    command: python -m src.bot
-    environment:
-      - OLLAMA_HOST=http://host.docker.internal:11434
-    volumes:
-      - ./secrets:/app/secrets
+      - ./secrets:/home/appuser/app/secrets:ro
+      - router-data:/home/appuser/app/data
     networks:
       - ai-network
     depends_on:
-      hybrid-router:
+      ollama:
         condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7860/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: "25m"
+        max-file: "5"
+    deploy:
+      resources:
+        limits:
+          memory: 1G
 
-  # --- THE FACE: Open WebUI ---
-  open-webui:
-    image: ghcr.io/open-webui/open-webui:main
-    container_name: open-webui
+  # ============================================================
+  # SERVICE B: Ollama (Local GPU Fallback — Tiers 8, 9, 10)
+  # ============================================================
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama-fallback
     restart: always
     ports:
-      - "3000:8080"
-    environment:
-      - OLLAMA_BASE_URL=http://host.docker.internal:11434
-      - WEBUI_SECRET_KEY=antigravity_secret_key_2026
+      - "11434:11434"
     volumes:
-      - open-webui-data:/app/backend/data
+      - ollama-models:/root/.ollama
     networks:
       - ai-network
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "25m"
+        max-file: "3"
+
+  # ============================================================
+  # SERVICE C: Ollama Model Puller (init container — runs once)
+  # ============================================================
+  ollama-pull:
+    image: ollama/ollama:latest
+    container_name: ollama-model-puller
+    restart: "no"
+    depends_on:
+      ollama:
+        condition: service_healthy
+    networks:
+      - ai-network
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo "============================================"
+        echo " OLLAMA MODEL PULLER — Tier 8, 9, 10 Init"
+        echo "============================================"
+        export OLLAMA_HOST=http://ollama:11434
+
+        pull_model() {
+          echo "[PULL] Pulling $$1..."
+          for attempt in 1 2 3; do
+            if ollama pull "$$1"; then
+              echo "[PULL] ✅ $$1 ready."
+              return 0
+            fi
+            echo "[PULL] ⚠️  Attempt $$attempt/3 failed for $$1. Retrying in 10s..."
+            sleep 10
+          done
+          echo "[PULL] ❌ FAILED to pull $$1 after 3 attempts."
+          return 1
+        }
+
+        pull_model "llama3.1"
+        pull_model "qwen2.5-coder"
+        pull_model "mistral-nemo"
+
+        echo "============================================"
+        echo " MODEL PULL COMPLETE"
+        echo "============================================"
+        ollama list
 
 networks:
   ai-network:
     driver: bridge
 
 volumes:
-  open-webui-data:
+  ollama-models:
+    driver: local
+  router-data:
+    driver: local
