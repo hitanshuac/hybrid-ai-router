@@ -113,8 +113,12 @@ def get_dashboard(request: Request):
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Hybrid AI Router | Console</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <!-- Markdown & Syntax Highlighting -->
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
         <style>
             :root {{
                 --bg: #0a0e1a;
@@ -401,6 +405,33 @@ def get_dashboard(request: Request):
                 border-bottom-left-radius: 0.25rem;
                 border: 1px solid var(--border);
             }}
+            
+            /* Markdown Styles */
+            .bubble p {{ margin-bottom: 0.75rem; }}
+            .bubble p:last-child {{ margin-bottom: 0; }}
+            .bubble pre {{
+                background: #0d1117;
+                padding: 1rem;
+                border-radius: 0.5rem;
+                overflow-x: auto;
+                margin: 0.75rem 0;
+                border: 1px solid var(--border);
+            }}
+            .bubble code {{
+                font-family: 'Consolas', 'Monaco', monospace;
+                font-size: 0.85rem;
+                background: rgba(0,0,0,0.3);
+                padding: 0.15rem 0.3rem;
+                border-radius: 0.25rem;
+            }}
+            .bubble pre code {{
+                background: transparent;
+                padding: 0;
+            }}
+            .bubble ul, .bubble ol {{
+                margin-left: 1.5rem;
+                margin-bottom: 0.75rem;
+            }}
             .msg-meta {{
                 font-size: 0.65rem;
                 color: var(--text-muted);
@@ -452,6 +483,22 @@ def get_dashboard(request: Request):
                 background: var(--card);
                 color: var(--text-muted);
                 cursor: not-allowed;
+            }}
+            .clear-btn {{
+                background: transparent;
+                color: var(--text-muted);
+                border: 1px solid var(--border);
+                border-radius: 0.6rem;
+                padding: 0 1rem;
+                font-weight: 600;
+                font-size: 0.85rem;
+                cursor: pointer;
+                transition: all 0.2s;
+            }}
+            .clear-btn:hover {{
+                background: rgba(255, 100, 100, 0.1);
+                color: var(--danger);
+                border-color: rgba(255, 100, 100, 0.3);
             }}
 
             /* Typist Indicator */
@@ -530,6 +577,7 @@ def get_dashboard(request: Request):
                     </div>
                     <div id="typing-container"></div>
                     <div class="input-area">
+                        <button class="clear-btn" onclick="clearChat()" title="Clear Chat History">🗑️</button>
                         <textarea id="chat-input" class="chat-input" placeholder="Type your message... (Enter to send)" onkeydown="handleEnter(event)"></textarea>
                         <button id="send-btn" class="send-btn" onclick="sendMessage()">Send</button>
                     </div>
@@ -603,10 +651,44 @@ def get_dashboard(request: Request):
         </div>
 
         <script>
+            // Configure marked with highlight.js
+            marked.setOptions({
+                highlight: function(code, lang) {
+                    const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+                    return hljs.highlight(code, { language }).value;
+                }
+            });
+
             // Chat history tracking
-            const chatHistory = [
-                {{ role: "assistant", content: "Welcome! I am your offsite Hybrid AI Router. How can I help you today?" }}
-            ];
+            let chatHistory = [];
+            const savedHistory = localStorage.getItem("chatHistory");
+            if (savedHistory) {
+                try {
+                    chatHistory = JSON.parse(savedHistory);
+                } catch (e) {
+                    chatHistory = [];
+                }
+            }
+
+            if (chatHistory.length === 0) {
+                chatHistory = [
+                    { role: "assistant", content: "Welcome! I am your offsite Hybrid AI Router. How can I help you today?" }
+                ];
+                saveHistory();
+            }
+
+            function saveHistory() {
+                localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+            }
+
+            // Render existing history on load
+            window.onload = () => {
+                chatHistory.forEach(msg => {
+                    const meta = msg.role === "user" ? "you" : (msg.meta || "system");
+                    renderMessage(msg.role, msg.content, meta, false);
+                });
+            };
+
             let isSending = false;
 
             // Tab switcher
@@ -640,8 +722,9 @@ def get_dashboard(request: Request):
                 document.getElementById('send-btn').disabled = true;
 
                 // 1. Render User Message
-                renderMessage("user", text, "you");
-                chatHistory.push({{ role: "user", content: text }});
+                renderMessage("user", text, "you", true);
+                chatHistory.push({ role: "user", content: text, meta: "you" });
+                saveHistory();
 
                 // 2. Render Typing Indicator
                 showTypingIndicator();
@@ -676,8 +759,9 @@ def get_dashboard(request: Request):
                             providerName = "Cascade System Error";
                         }}
 
-                        renderMessage("assistant", displayContent, providerName);
-                        chatHistory.push({{ role: "assistant", content: content }});
+                        renderMessage("assistant", displayContent, providerName, true);
+                        chatHistory.push({ role: "assistant", content: content, meta: providerName });
+                        saveHistory();
                     }} else {{
                         const errData = await response.json();
                         renderMessage("assistant", "Error: " + (errData.error || "Failed to process completion request."), "system error");
@@ -693,17 +777,35 @@ def get_dashboard(request: Request):
                 }}
             }}
 
-            function renderMessage(role, text, meta) {{
+            function renderMessage(role, text, meta, animate = true) {
                 const msgsContainer = document.getElementById('chat-messages');
                 const msgDiv = document.createElement('div');
-                msgDiv.className = `msg ${{role}}`;
+                msgDiv.className = `msg ${role}`;
+                if (!animate) msgDiv.style.animation = "none";
+                
+                let renderedText = text;
+                if (role === "assistant") {
+                    // Parse markdown and sanitize
+                    const rawHtml = marked.parse(text);
+                    renderedText = DOMPurify.sanitize(rawHtml);
+                } else {
+                    renderedText = escapeHtml(text);
+                }
+
                 msgDiv.innerHTML = `
-                    <div class="bubble">${{escapeHtml(text)}}</div>
-                    <div class="msg-meta">served by: ${{escapeHtml(meta)}}</div>
+                    <div class="bubble">${renderedText}</div>
+                    <div class="msg-meta">served by: ${escapeHtml(meta)}</div>
                 `;
                 msgsContainer.appendChild(msgDiv);
                 msgsContainer.scrollTop = msgsContainer.scrollHeight;
-            }}
+            }
+
+            function clearChat() {
+                if (confirm("Are you sure you want to clear the chat history?")) {
+                    localStorage.removeItem("chatHistory");
+                    location.reload();
+                }
+            }
 
             function showTypingIndicator() {{
                 const container = document.getElementById('typing-container');
