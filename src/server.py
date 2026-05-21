@@ -652,42 +652,42 @@ def get_dashboard(request: Request):
 
         <script>
             // Configure marked with highlight.js
-            marked.setOptions({
-                highlight: function(code, lang) {
+            marked.setOptions({{
+                highlight: function(code, lang) {{
                     const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-                    return hljs.highlight(code, { language }).value;
-                }
-            });
+                    return hljs.highlight(code, {{ language }}).value;
+                }}
+            }});
 
             // Chat history tracking
             let chatHistory = [];
             const savedHistory = localStorage.getItem("chatHistory");
-            if (savedHistory) {
-                try {
+            if (savedHistory) {{
+                try {{
                     chatHistory = JSON.parse(savedHistory);
-                } catch (e) {
+                }} catch (e) {{
                     chatHistory = [];
-                }
-            }
+                }}
+            }}
 
-            if (chatHistory.length === 0) {
+            if (chatHistory.length === 0) {{
                 chatHistory = [
-                    { role: "assistant", content: "Welcome! I am your offsite Hybrid AI Router. How can I help you today?" }
+                    {{ role: "assistant", content: "Welcome! I am your offsite Hybrid AI Router. How can I help you today?" }}
                 ];
                 saveHistory();
-            }
+            }}
 
-            function saveHistory() {
+            function saveHistory() {{
                 localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
-            }
+            }}
 
             // Render existing history on load
-            window.onload = () => {
-                chatHistory.forEach(msg => {
+            window.onload = () => {{
+                chatHistory.forEach(msg => {{
                     const meta = msg.role === "user" ? "you" : (msg.meta || "system");
                     renderMessage(msg.role, msg.content, meta, false);
-                });
-            };
+                }});
+            }};
 
             let isSending = false;
 
@@ -723,7 +723,7 @@ def get_dashboard(request: Request):
 
                 // 1. Render User Message
                 renderMessage("user", text, "you", true);
-                chatHistory.push({ role: "user", content: text, meta: "you" });
+                chatHistory.push({{ role: "user", content: text, meta: "you" }});
                 saveHistory();
 
                 // 2. Render Typing Indicator
@@ -760,7 +760,7 @@ def get_dashboard(request: Request):
                         }}
 
                         renderMessage("assistant", displayContent, providerName, true);
-                        chatHistory.push({ role: "assistant", content: content, meta: providerName });
+                        chatHistory.push({{ role: "assistant", content: content, meta: providerName }});
                         saveHistory();
                     }} else {{
                         const errData = await response.json();
@@ -777,35 +777,35 @@ def get_dashboard(request: Request):
                 }}
             }}
 
-            function renderMessage(role, text, meta, animate = true) {
+            function renderMessage(role, text, meta, animate = true) {{
                 const msgsContainer = document.getElementById('chat-messages');
                 const msgDiv = document.createElement('div');
-                msgDiv.className = `msg ${role}`;
+                msgDiv.className = `msg ${{role}}`;
                 if (!animate) msgDiv.style.animation = "none";
                 
                 let renderedText = text;
-                if (role === "assistant") {
+                if (role === "assistant") {{
                     // Parse markdown and sanitize
                     const rawHtml = marked.parse(text);
                     renderedText = DOMPurify.sanitize(rawHtml);
-                } else {
+                }} else {{
                     renderedText = escapeHtml(text);
-                }
+                }}
 
                 msgDiv.innerHTML = `
-                    <div class="bubble">${renderedText}</div>
-                    <div class="msg-meta">served by: ${escapeHtml(meta)}</div>
+                    <div class="bubble">${{renderedText}}</div>
+                    <div class="msg-meta">served by: ${{escapeHtml(meta)}}</div>
                 `;
                 msgsContainer.appendChild(msgDiv);
                 msgsContainer.scrollTop = msgsContainer.scrollHeight;
-            }
+            }}
 
-            function clearChat() {
-                if (confirm("Are you sure you want to clear the chat history?")) {
+            function clearChat() {{
+                if (confirm("Are you sure you want to clear the chat history?")) {{
                     localStorage.removeItem("chatHistory");
                     location.reload();
-                }
-            }
+                }}
+            }}
 
             function showTypingIndicator() {{
                 const container = document.getElementById('typing-container');
