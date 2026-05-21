@@ -26,6 +26,7 @@ This document logs every critical failure, its resolution, and its eventual outc
 | 18 | 2026-05-17 | **Context Drift (Ungrounded Models)** | Implemented Ephemeral Context Grounding v2.3.0 — system prompt injected at index 0 of every outbound payload | ✅ **Stayed** | Active |
 | 19 | 2026-05-17 | **Token Wastage (Uncompacted Payloads)** | Implemented Context Compaction v2.4.0 — boilerplate stripping, 10-msg sliding window, DuckDB telemetry tracking | ✅ **Stayed** | Active |
 | 20 | 2026-05-17 | **Event Loop Blocking** | Converted `/dashboard` and `/api/v1/metrics/efficiency` endpoints from `async def` to standard `def` to offload synchronous file I/O to Starlette's background threadpool | ✅ **Stayed** | Zero-latency LLM routing restored, 9/9 baseline tests passed |
+| 21 | 2026-05-21 | **Gemini 503 & Oracle Debt** | Stripped local Ollama, rejected Oracle ARM, committed to 9-Tier Cloud Cascade | ✅ **Stayed** | Pure Cloud Simplicity |
 
 ## 🧠 Key Learnings
 1.  **Complexity is a Debt**: Every "Smart" feature (RAG, Semantic Router) adds a failure point. In high-pressure engineering, **Cascading Fallbacks** beat **Complex Classification**.
@@ -34,6 +35,7 @@ This document logs every critical failure, its resolution, and its eventual outc
 4.  **System-Prompt Governance is an SRE Primitive**: Without an enforced grounding message, downstream models produce inconsistent personas across cascade tiers. Ephemeral injection at the router layer is the cheapest, most reliable fix — zero extra latency, zero persistence overhead.
 5.  **Measure Before You Optimize**: Compaction without telemetry is guessing. DuckDB-backed metrics on every request give you the hard data to prove token savings and justify architectural decisions.
 6.  **Guard the Event Loop**: Never run blocking synchronous database or file system calls (like DuckDB file connections) inside an `async def` handler. In high-throughput ASGI environments like FastAPI, synchronous reads will freeze the event loop, causing severe latency spikes and connection resets (WinError 10054). Offload them to background threadpools using standard `def` endpoints.
+7.  **Oracle / Self-Hosting Fallacy**: The overhead of managing an "Always Free" Oracle ARM server for fallback Ollama instances introduces immense maintenance burden and idle-reclamation risks. We explicitly rejected Oracle and completely stripped out local Ollama. Gemini's unprecedented rate limit reductions act as a massive wake-up call that validates this pure-cloud, multi-provider 9-tier router model.
 
 
 ---

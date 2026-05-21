@@ -109,31 +109,22 @@ TIERS = [
     },
     {
         "tier": 8,
-        "name": "Ollama/Llama3.1",
-        "provider": "ollama",
-        "model": "llama3.1",
-        "url": f"{OLLAMA_HOST}/api/chat",
-        "timeout": 90,
-        "format": "ollama",
+        "name": "NVIDIA-NIM/Mistral-Nemo",
+        "provider": "nvidia",
+        "model": "mistralai/mistral-nemo-12b-instruct",
+        "url": "https://integrate.api.nvidia.com/v1/chat/completions",
+        "timeout": 15,
+        "format": "openai",
     },
     {
         "tier": 9,
-        "name": "Ollama/Qwen2.5-Coder",
-        "provider": "ollama",
-        "model": "qwen2.5-coder",
-        "url": f"{OLLAMA_HOST}/api/chat",
-        "timeout": 90,
-        "format": "ollama",
-    },
-    {
-        "tier": 10,
-        "name": "Ollama/Mistral-Nemo",
-        "provider": "ollama",
-        "model": "mistral-nemo",
-        "url": f"{OLLAMA_HOST}/api/chat",
-        "timeout": 90,
-        "format": "ollama",
-    },
+        "name": "NVIDIA-NIM/Qwen2.5-72B",
+        "provider": "nvidia",
+        "model": "qwen/qwen2.5-72b-instruct",
+        "url": "https://integrate.api.nvidia.com/v1/chat/completions",
+        "timeout": 15,
+        "format": "openai",
+    }
 ]
 
 # ============================================================
@@ -248,35 +239,6 @@ async def _call_openai_format(
         return None
 
 
-async def _call_ollama_format(
-    client: httpx.AsyncClient, tier_def: dict, messages: list
-) -> Optional[str]:
-    """Call Ollama's native /api/chat endpoint. Returns response text or None."""
-    payload = {"model": tier_def["model"], "messages": messages, "stream": False}
-
-    try:
-        resp = await client.post(
-            tier_def["url"],
-            json=payload,
-            timeout=tier_def["timeout"],
-        )
-        if resp.status_code == 200:
-            data = resp.json()
-            return data.get("message", {}).get("content")
-        else:
-            record_failure(tier_def["tier"], resp.status_code)
-            logger.warning(
-                f"[CASCADE] Tier {tier_def['tier']} ({tier_def['name']}) — HTTP {resp.status_code}"
-            )
-            return None
-    except (httpx.TimeoutException, httpx.ConnectError, httpx.ReadError) as e:
-        logger.warning(f"[CASCADE] Tier {tier_def['tier']} ({tier_def['name']}) — {type(e).__name__}: {e}")
-        return None
-    except Exception as e:
-        logger.error(f"[CASCADE] Tier {tier_def['tier']} ({tier_def['name']}) — Unexpected: {e}")
-        return None
-
-
 async def _try_tier(
     client: httpx.AsyncClient, tier_def: dict, messages: list
 ) -> Optional[str]:
@@ -288,12 +250,6 @@ async def _try_tier(
     if is_circuit_open(tier_num):
         logger.info(f"[CASCADE] Tier {tier_num} ({tier_def['name']}) — Circuit OPEN, skipping.")
         return None
-
-    if tier_def["format"] == "ollama":
-        result = await _call_ollama_format(client, tier_def, messages)
-        if result:
-            record_success(tier_num)
-        return result
 
     # OpenAI-format: rotate through available keys
     keys = _KEY_POOL.get(provider, [])

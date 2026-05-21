@@ -52,7 +52,7 @@ graph TD
         CB -.->|"Context Search"| Chroma
         
         %% Cascade Router
-        subgraph Cascade ["10-Tier Hybrid Cascade Engine"]
+        subgraph Cascade ["9-Tier Hybrid Cascade Engine"]
             Tier1["1. Groq (Llama-3-70B)"]:::provider
             Tier2["2. Groq (Mixtral)"]:::provider
             Tier3["3. AI Studio (Gemini-1.5-Flash)"]:::provider
@@ -60,9 +60,8 @@ graph TD
             Tier5["5. OpenRouter (Llama-3-8B-Free)"]:::provider
             Tier6["6. OpenRouter (Phi-3-128k-Free)"]:::provider
             Tier7["7. NVIDIA NIM (Llama-3)"]:::provider
-            Tier8["8. Local Ollama (Llama-3.1)"]:::provider
-            Tier9["9. Local Ollama (Qwen2.5-Coder)"]:::provider
-            Tier10["10. Local Ollama (Mistral-Nemo)"]:::provider
+            Tier8["8. NVIDIA NIM (Mistral-Nemo)"]:::provider
+            Tier9["9. NVIDIA NIM (Qwen-2.5-72B)"]:::provider
             
             Tier1 -->|"Fallback"| Tier2
             Tier2 -->|"Fallback"| Tier3
@@ -72,7 +71,6 @@ graph TD
             Tier6 -->|"Fallback"| Tier7
             Tier7 -->|"Fallback"| Tier8
             Tier8 -->|"Fallback"| Tier9
-            Tier9 -->|"Fallback"| Tier10
         end
         
         CB -->|"Routes Payload"| Cascade
