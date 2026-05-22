@@ -2,7 +2,7 @@
 
 This document logs every critical failure, its resolution, and its eventual outcome. It is the "Hard Memory" of the project.
 
-## 🔴 Failure Logs (Last 100 Cycles)
+e## 🔴 Failure Logs (Last 100 Cycles)
 
 | ID | Timestamp | Problem | Fix Implemented | Status | Outcome |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -26,7 +26,7 @@ This document logs every critical failure, its resolution, and its eventual outc
 | 18 | 2026-05-17 | **Context Drift (Ungrounded Models)** | Implemented Ephemeral Context Grounding v2.3.0 — system prompt injected at index 0 of every outbound payload | ✅ **Stayed** | Active |
 | 19 | 2026-05-17 | **Token Wastage (Uncompacted Payloads)** | Implemented Context Compaction v2.4.0 — boilerplate stripping, 10-msg sliding window, DuckDB telemetry tracking | ✅ **Stayed** | Active |
 | 20 | 2026-05-17 | **Event Loop Blocking** | Converted `/dashboard` and `/api/v1/metrics/efficiency` endpoints from `async def` to standard `def` to offload synchronous file I/O to Starlette's background threadpool | ✅ **Stayed** | Zero-latency LLM routing restored, 9/9 baseline tests passed |
-| 21 | 2026-05-21 | **Gemini 503 & Oracle Debt** | Stripped local Ollama, rejected Oracle ARM, committed to 9-Tier Cloud Cascade | ✅ **Stayed** | Pure Cloud Simplicity |
+| 21 | 2026-05-21 | **Gemini 503 & Oracle Debt** | Stripped local Ollama, rjected Oracle ARM, committed to 9-Tier Cloud Cascade | ✅ **Stayed** | Pure Cloud Simplicity |
 | 22 | 2026-05-21 | **Webhook Lifecycle Timeout** | Permanently dropped `python-telegram-bot` webhook integration to achieve zero-latency booting | ✅ **Stayed** | Singular SPA Gateway |
 
 ## 🧠 Key Learnings

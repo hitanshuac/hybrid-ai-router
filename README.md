@@ -93,6 +93,15 @@ Every request array flowing through the gateway is processed through five immuta
 
 ---
 
+## 🛡️ SRE Frontend Guardrails & Open WebUI Integration
+
+The Router acts as a robust upstream provider for **Open WebUI**, enforcing strict operational stability across the stack:
+- **Upstream Validation Mocking (`/v1/models`)**: Exposes a fallback model registry to gracefully satisfy Open WebUI's initialization checks and prevent `HTTP 404 text/html` JSON decoding crashes.
+- **Global Exception Sanitization**: A top-level FastAPI exception handler wraps all fatal unhandled crashes into structured `500 Internal Server Error` JSON responses, guaranteeing zero stacktrace leakage to the client or production logs.
+- **Backend Quarantine**: The Open WebUI Hugging Face Space Docker container is strictly configured (`ENABLE_OLLAMA_API="False"`) to sever DNS resolution to non-existent local Ollama endpoints, instantly neutralizing connection timeout retry storms.
+
+---
+
 ## 📊 Real-Time SRE Telemetry Mandate
 
 To guarantee operational transparency and prevent architectural guesswork, the router enforces a strict **Telemetry Mandate** running on the request hot path.

@@ -77,6 +77,15 @@ def _record_compaction_metrics(metrics: dict, latency: float, tier: str):
 
 _init_metrics_db()
 
+# --- GLOBAL EXCEPTION HANDLER (SRE Guardrail) ---
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    logger.error(f"Unhandled Exception on {request.url.path}: {exc}", exc_info=False)
+    return JSONResponse(
+        status_code=500,
+        content={"error": "Internal Server Error", "type": "server_error", "message": str(exc)},
+    )
+
 
 # --- STARTUP: Launch background health pings ---
 @app.on_event("startup")
@@ -943,6 +952,24 @@ class ChatCompletionRequest(BaseModel):
     messages: List[ChatMessage]
     stream: Optional[bool] = False
     temperature: Optional[float] = None
+
+@app.get("/v1/models")
+async def get_models():
+    # Return a fallback cached model registry to satisfy Open WebUI upstream validation
+    return JSONResponse(content={
+        "object": "list",
+        "data": [
+            {
+                "id": "hybrid-router",
+                "object": "model",
+                "created": 1686935002,
+                "owned_by": "hybrid-ai",
+                "permission": [],
+                "root": "hybrid-router",
+                "parent": None
+            }
+        ]
+    })
 
 @app.post("/v1/chat/completions")
 async def chat_completions(request: ChatCompletionRequest):
