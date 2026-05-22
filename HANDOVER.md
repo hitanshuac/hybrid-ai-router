@@ -16,3 +16,11 @@ The active workspace features:
 4. **Docs & Assets**: Dual-presentation architecture diagrams and GitHub showcases are fully synchronized.
 
 You are safe to initialize a new Antigravity workspace using this checkpoint. All codebase changes are pushed, secured, and validated.
+
+---
+
+## 🛑 STRICT OPERATIONAL GUIDELINES FOR NEXT AGENT
+To prevent token burnout and maintain maximum efficiency during the next session, **you must adhere to the following rules**:
+1. **Zero Conversational Fluff**: Do not ask unnecessary clarifying questions unless absolutely blocked. Make executive technical decisions based on the existing SRE standards.
+2. **Compact Responses**: Keep your conversational replies extremely brief. Rely on Markdown artifacts (`implementation_plan.md`, `task.md`, `walkthrough.md`) to document state.
+3. **Execute Autonomously**: If the user provides a clear directive (e.g., "build feature X"), proceed directly to execution without waiting for multiple rounds of affirmation. Do the research, make the plan, and execute.
