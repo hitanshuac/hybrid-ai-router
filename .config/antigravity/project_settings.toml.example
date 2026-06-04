@@ -1,0 +1,21 @@
+# Antigravity 12-Factor App Configuration
+# Rename to project_settings.toml and DO NOT commit to version control.
+
+[environment]
+tier = "production"
+log_level = "INFO"
+
+[api]
+gateway_port = 7860
+host = "0.0.0.0"
+
+[database]
+# Path relative to the application root
+duckdb_path = "data/pipeline_metrics.db"
+dlq_path = "data/"
+
+[models]
+# Define active models for the polymorphic engine
+vision_primary = "gemini-2.5-flash-vision"
+fallback_tier_1 = "groq/llama3-vision"
+fallback_tier_2 = "openrouter/gpt-4o"

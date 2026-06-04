@@ -1,0 +1,2276 @@
+{
+  "schema": "antigravity-knowledge-graph-v2",
+  "created_at_utc": "2026-05-17T16:20:05.642631+00:00",
+  "workspace": "D:\\Projects\\Hybrid-AI-Router",
+  "summary": {
+    "file_count": 47,
+    "walked_file_count": 47,
+    "languages": {
+      "Python": 16,
+      "Markdown": 3,
+      "YAML": 1,
+      "JSON": 1
+    },
+    "frameworks": [
+      "Python (requirements.txt)",
+      "Docker",
+      "Docker Compose"
+    ],
+    "type_distribution": {
+      "other": 10,
+      "code": 21,
+      "documentation": 11,
+      "data": 1,
+      "media": 4
+    },
+    "semantic_files": 16,
+    "semantic_edges": 137,
+    "semantic_files_by_language": {
+      "Python": 16
+    },
+    "semantic_edges_by_type": {
+      "declares_package": 16,
+      "defines": 46,
+      "entrypoint": 1,
+      "imports": 73,
+      "tests": 1
+    },
+    "semantic_adapters": {
+      "python": 16
+    },
+    "generic_fallback_file_count": 0,
+    "parse_error_file_count": 0
+  },
+  "diagnostics": {
+    "generic_fallback_files": [],
+    "parse_error_files": []
+  },
+  "nodes": [
+    {
+      "id": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "type": "workspace",
+      "label": "Hybrid-AI-Router"
+    },
+    {
+      "id": "language:python",
+      "type": "language",
+      "label": "Python",
+      "count": 16
+    },
+    {
+      "id": "language:markdown",
+      "type": "language",
+      "label": "Markdown",
+      "count": 3
+    },
+    {
+      "id": "language:yaml",
+      "type": "language",
+      "label": "YAML",
+      "count": 1
+    },
+    {
+      "id": "language:json",
+      "type": "language",
+      "label": "JSON",
+      "count": 1
+    },
+    {
+      "id": "framework:python_(requirements.txt)",
+      "type": "framework",
+      "label": "Python (requirements.txt)"
+    },
+    {
+      "id": "framework:docker",
+      "type": "framework",
+      "label": "Docker"
+    },
+    {
+      "id": "framework:docker_compose",
+      "type": "framework",
+      "label": "Docker Compose"
+    },
+    {
+      "id": "dir:data",
+      "type": "directory",
+      "label": "data"
+    },
+    {
+      "id": "dir:docs",
+      "type": "directory",
+      "label": "docs"
+    },
+    {
+      "id": "dir:secrets",
+      "type": "directory",
+      "label": "secrets"
+    },
+    {
+      "id": "dir:src",
+      "type": "directory",
+      "label": "src"
+    },
+    {
+      "id": "file:.env.example",
+      "type": "other",
+      "label": ".env.example",
+      "size": 383,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:.gitignore",
+      "type": "other",
+      "label": ".gitignore",
+      "size": 536,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:.webui_secret_key",
+      "type": "other",
+      "label": ".webui_secret_key",
+      "size": 16,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:docker-compose.yml",
+      "type": "code",
+      "label": "docker-compose.yml",
+      "size": 1648,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:Dockerfile",
+      "type": "other",
+      "label": "Dockerfile",
+      "size": 737,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:HANDOVER.md",
+      "type": "code",
+      "label": "HANDOVER.md",
+      "size": 744,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:Hybrid-AI-Router.code-workspace",
+      "type": "other",
+      "label": "Hybrid-AI-Router.code-workspace",
+      "size": 213,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:LICENSE",
+      "type": "other",
+      "label": "LICENSE",
+      "size": 1073,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:README.md",
+      "type": "code",
+      "label": "README.md",
+      "size": 7760,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:requirements.txt",
+      "type": "documentation",
+      "label": "requirements.txt",
+      "size": 151,
+      "mime": "text/plain"
+    },
+    {
+      "id": "file:retrospective.md",
+      "type": "code",
+      "label": "retrospective.md",
+      "size": 7836,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:start_all.bat",
+      "type": "other",
+      "label": "start_all.bat",
+      "size": 794,
+      "mime": "text/plain"
+    },
+    {
+      "id": "file:start_telegram_bot.bat",
+      "type": "other",
+      "label": "start_telegram_bot.bat",
+      "size": 180,
+      "mime": "text/plain"
+    },
+    {
+      "id": "file:data/.gitkeep",
+      "type": "other",
+      "label": "data/.gitkeep",
+      "size": 22,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:data/eval_baseline_results.json",
+      "type": "code",
+      "label": "data/eval_baseline_results.json",
+      "size": 2985,
+      "mime": "application/json"
+    },
+    {
+      "id": "file:data/pipeline_metrics.db",
+      "type": "data",
+      "label": "data/pipeline_metrics.db",
+      "size": 798720,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:docs/assets/architecture_diagram_v2_2_0.png",
+      "type": "media",
+      "label": "docs/assets/architecture_diagram_v2_2_0.png",
+      "size": 755525,
+      "mime": "image/png"
+    },
+    {
+      "id": "file:docs/assets/architecture_diagram_v2_4_1.png",
+      "type": "media",
+      "label": "docs/assets/architecture_diagram_v2_4_1.png",
+      "size": 680871,
+      "mime": "image/png"
+    },
+    {
+      "id": "file:docs/assets/LLM-live-dashboard.png",
+      "type": "media",
+      "label": "docs/assets/LLM-live-dashboard.png",
+      "size": 126295,
+      "mime": "image/png"
+    },
+    {
+      "id": "file:docs/assets/terminal_output_ingestion.png",
+      "type": "media",
+      "label": "docs/assets/terminal_output_ingestion.png",
+      "size": 481347,
+      "mime": "image/png"
+    },
+    {
+      "id": "file:secrets/anthropic_api_key.txt",
+      "type": "documentation",
+      "label": "secrets/anthropic_api_key.txt",
+      "size": 108,
+      "mime": "text/plain"
+    },
+    {
+      "id": "file:secrets/gemini_api_key.txt",
+      "type": "documentation",
+      "label": "secrets/gemini_api_key.txt",
+      "size": 39,
+      "mime": "text/plain"
+    },
+    {
+      "id": "file:secrets/gemini_api_key_2.txt",
+      "type": "documentation",
+      "label": "secrets/gemini_api_key_2.txt",
+      "size": 39,
+      "mime": "text/plain"
+    },
+    {
+      "id": "file:secrets/groq_api_key.txt",
+      "type": "documentation",
+      "label": "secrets/groq_api_key.txt",
+      "size": 56,
+      "mime": "text/plain"
+    },
+    {
+      "id": "file:secrets/groq_api_key_2.txt",
+      "type": "documentation",
+      "label": "secrets/groq_api_key_2.txt",
+      "size": 56,
+      "mime": "text/plain"
+    },
+    {
+      "id": "file:secrets/groq_api_key_3.txt",
+      "type": "documentation",
+      "label": "secrets/groq_api_key_3.txt",
+      "size": 56,
+      "mime": "text/plain"
+    },
+    {
+      "id": "file:secrets/master_key.txt",
+      "type": "documentation",
+      "label": "secrets/master_key.txt",
+      "size": 90,
+      "mime": "text/plain"
+    },
+    {
+      "id": "file:secrets/nvidia_api_key.txt",
+      "type": "documentation",
+      "label": "secrets/nvidia_api_key.txt",
+      "size": 70,
+      "mime": "text/plain"
+    },
+    {
+      "id": "file:secrets/openrouter_api_key.txt",
+      "type": "documentation",
+      "label": "secrets/openrouter_api_key.txt",
+      "size": 73,
+      "mime": "text/plain"
+    },
+    {
+      "id": "file:secrets/telegram_bot_token.txt",
+      "type": "documentation",
+      "label": "secrets/telegram_bot_token.txt",
+      "size": 46,
+      "mime": "text/plain"
+    },
+    {
+      "id": "file:src/.gitkeep",
+      "type": "other",
+      "label": "src/.gitkeep",
+      "size": 21,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:src/bot.py",
+      "type": "code",
+      "label": "src/bot.py",
+      "size": 2900,
+      "mime": "text/x-python",
+      "language": "Python",
+      "semantic_adapter": "python",
+      "semantic_package_identity": "src.bot",
+      "semantic_module_name": "src.bot",
+      "semantic_import_count": 6,
+      "semantic_symbol_count": 2,
+      "is_test_file": false,
+      "entrypoints": [],
+      "generic_fallback": false
+    },
+    {
+      "id": "file:src/config.py",
+      "type": "code",
+      "label": "src/config.py",
+      "size": 1762,
+      "mime": "text/x-python",
+      "language": "Python",
+      "semantic_adapter": "python",
+      "semantic_package_identity": "src.config",
+      "semantic_module_name": "src.config",
+      "semantic_import_count": 3,
+      "semantic_symbol_count": 2,
+      "is_test_file": false,
+      "entrypoints": [],
+      "generic_fallback": false
+    },
+    {
+      "id": "file:src/context_manager.py",
+      "type": "code",
+      "label": "src/context_manager.py",
+      "size": 3683,
+      "mime": "text/x-python",
+      "language": "Python",
+      "semantic_adapter": "python",
+      "semantic_package_identity": "src.context_manager",
+      "semantic_module_name": "src.context_manager",
+      "semantic_import_count": 4,
+      "semantic_symbol_count": 1,
+      "is_test_file": false,
+      "entrypoints": [],
+      "generic_fallback": false
+    },
+    {
+      "id": "file:src/daily_ingestion.py",
+      "type": "code",
+      "label": "src/daily_ingestion.py",
+      "size": 282,
+      "mime": "text/x-python",
+      "language": "Python",
+      "semantic_adapter": "python",
+      "semantic_package_identity": "src.daily_ingestion",
+      "semantic_module_name": "src.daily_ingestion",
+      "semantic_import_count": 2,
+      "semantic_symbol_count": 0,
+      "is_test_file": false,
+      "entrypoints": [],
+      "generic_fallback": false
+    },
+    {
+      "id": "file:src/health.py",
+      "type": "code",
+      "label": "src/health.py",
+      "size": 3453,
+      "mime": "text/x-python",
+      "language": "Python",
+      "semantic_adapter": "python",
+      "semantic_package_identity": "src.health",
+      "semantic_module_name": "src.health",
+      "semantic_import_count": 7,
+      "semantic_symbol_count": 5,
+      "is_test_file": false,
+      "entrypoints": [],
+      "generic_fallback": false
+    },
+    {
+      "id": "file:src/llm_cloud.py",
+      "type": "code",
+      "label": "src/llm_cloud.py",
+      "size": 5902,
+      "mime": "text/x-python",
+      "language": "Python",
+      "semantic_adapter": "python",
+      "semantic_package_identity": "src.llm_cloud",
+      "semantic_module_name": "src.llm_cloud",
+      "semantic_import_count": 6,
+      "semantic_symbol_count": 6,
+      "is_test_file": false,
+      "entrypoints": [],
+      "generic_fallback": false
+    },
+    {
+      "id": "file:src/llm_local.py",
+      "type": "code",
+      "label": "src/llm_local.py",
+      "size": 6498,
+      "mime": "text/x-python",
+      "language": "Python",
+      "semantic_adapter": "python",
+      "semantic_package_identity": "src.llm_local",
+      "semantic_module_name": "src.llm_local",
+      "semantic_import_count": 5,
+      "semantic_symbol_count": 5,
+      "is_test_file": false,
+      "entrypoints": [],
+      "generic_fallback": false
+    },
+    {
+      "id": "file:src/main.py",
+      "type": "code",
+      "label": "src/main.py",
+      "size": 729,
+      "mime": "text/x-python",
+      "language": "Python",
+      "semantic_adapter": "python",
+      "semantic_package_identity": "src.main",
+      "semantic_module_name": "src.main",
+      "semantic_import_count": 3,
+      "semantic_symbol_count": 1,
+      "is_test_file": false,
+      "entrypoints": [],
+      "generic_fallback": false
+    },
+    {
+      "id": "file:src/router.py",
+      "type": "code",
+      "label": "src/router.py",
+      "size": 5331,
+      "mime": "text/x-python",
+      "language": "Python",
+      "semantic_adapter": "python",
+      "semantic_package_identity": "src.router",
+      "semantic_module_name": "src.router",
+      "semantic_import_count": 3,
+      "semantic_symbol_count": 4,
+      "is_test_file": false,
+      "entrypoints": [],
+      "generic_fallback": false
+    },
+    {
+      "id": "file:src/server.py",
+      "type": "code",
+      "label": "src/server.py",
+      "size": 24375,
+      "mime": "text/x-python",
+      "language": "Python",
+      "semantic_adapter": "python",
+      "semantic_package_identity": "src.server",
+      "semantic_module_name": "src.server",
+      "semantic_import_count": 11,
+      "semantic_symbol_count": 11,
+      "is_test_file": false,
+      "entrypoints": [],
+      "generic_fallback": false
+    },
+    {
+      "id": "file:src/__init__.py",
+      "type": "code",
+      "label": "src/__init__.py",
+      "size": 0,
+      "mime": "text/x-python",
+      "language": "Python",
+      "semantic_adapter": "python",
+      "semantic_package_identity": "src.__init__",
+      "semantic_module_name": "src.__init__",
+      "semantic_import_count": 0,
+      "semantic_symbol_count": 0,
+      "is_test_file": false,
+      "entrypoints": [],
+      "generic_fallback": false
+    },
+    {
+      "id": "file:src/ingestion/database.py",
+      "type": "code",
+      "label": "src/ingestion/database.py",
+      "size": 1207,
+      "mime": "text/x-python",
+      "language": "Python",
+      "semantic_adapter": "python",
+      "semantic_package_identity": "src.ingestion.database",
+      "semantic_module_name": "src.ingestion.database",
+      "semantic_import_count": 3,
+      "semantic_symbol_count": 2,
+      "is_test_file": false,
+      "entrypoints": [],
+      "generic_fallback": false
+    },
+    {
+      "id": "file:src/ingestion/models.py",
+      "type": "code",
+      "label": "src/ingestion/models.py",
+      "size": 599,
+      "mime": "text/x-python",
+      "language": "Python",
+      "semantic_adapter": "python",
+      "semantic_package_identity": "src.ingestion.models",
+      "semantic_module_name": "src.ingestion.models",
+      "semantic_import_count": 3,
+      "semantic_symbol_count": 1,
+      "is_test_file": false,
+      "entrypoints": [],
+      "generic_fallback": false
+    },
+    {
+      "id": "file:src/ingestion/pipeline.py",
+      "type": "code",
+      "label": "src/ingestion/pipeline.py",
+      "size": 4129,
+      "mime": "text/x-python",
+      "language": "Python",
+      "semantic_adapter": "python",
+      "semantic_package_identity": "src.ingestion.pipeline",
+      "semantic_module_name": "src.ingestion.pipeline",
+      "semantic_import_count": 8,
+      "semantic_symbol_count": 1,
+      "is_test_file": false,
+      "entrypoints": [],
+      "generic_fallback": false
+    },
+    {
+      "id": "file:src/ingestion/__init__.py",
+      "type": "code",
+      "label": "src/ingestion/__init__.py",
+      "size": 34,
+      "mime": "text/x-python",
+      "language": "Python",
+      "semantic_adapter": "python",
+      "semantic_package_identity": "src.ingestion.__init__",
+      "semantic_module_name": "src.ingestion.__init__",
+      "semantic_import_count": 0,
+      "semantic_symbol_count": 0,
+      "is_test_file": false,
+      "entrypoints": [],
+      "generic_fallback": false
+    },
+    {
+      "id": "file:src/tests/eval_baseline.py",
+      "type": "code",
+      "label": "src/tests/eval_baseline.py",
+      "size": 13477,
+      "mime": "text/x-python",
+      "language": "Python",
+      "semantic_adapter": "python",
+      "semantic_package_identity": "src.tests.eval_baseline",
+      "semantic_module_name": "src.tests.eval_baseline",
+      "semantic_import_count": 9,
+      "semantic_symbol_count": 5,
+      "is_test_file": true,
+      "entrypoints": [
+        "main"
+      ],
+      "generic_fallback": false
+    },
+    {
+      "id": "module:src.__init__",
+      "type": "module",
+      "label": "src.__init__",
+      "language": "Python"
+    },
+    {
+      "id": "module:src.bot",
+      "type": "module",
+      "label": "src.bot",
+      "language": "Python"
+    },
+    {
+      "id": "module:logging",
+      "type": "module",
+      "label": "logging",
+      "language": "Python"
+    },
+    {
+      "id": "module:base64",
+      "type": "module",
+      "label": "base64",
+      "language": "Python"
+    },
+    {
+      "id": "module:telegram",
+      "type": "module",
+      "label": "telegram",
+      "language": "Python"
+    },
+    {
+      "id": "module:telegram.ext",
+      "type": "module",
+      "label": "telegram.ext",
+      "language": "Python"
+    },
+    {
+      "id": "module:src.router",
+      "type": "module",
+      "label": "src.router",
+      "language": "Python"
+    },
+    {
+      "id": "module:src.config",
+      "type": "module",
+      "label": "src.config",
+      "language": "Python"
+    },
+    {
+      "id": "symbol:src/bot.py:handle_message",
+      "type": "function",
+      "label": "handle_message",
+      "lineno": 15,
+      "signature": "async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/bot.py:run_bot",
+      "type": "function",
+      "label": "run_bot",
+      "lineno": 63,
+      "signature": "def run_bot():",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "module:os",
+      "type": "module",
+      "label": "os",
+      "language": "Python"
+    },
+    {
+      "id": "module:sys",
+      "type": "module",
+      "label": "sys",
+      "language": "Python"
+    },
+    {
+      "id": "symbol:src/config.py:get_secrets_list",
+      "type": "function",
+      "label": "get_secrets_list",
+      "lineno": 12,
+      "signature": "def get_secrets_list(prefix):",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/config.py:run_startup_checks",
+      "type": "function",
+      "label": "run_startup_checks",
+      "lineno": 25,
+      "signature": "def run_startup_checks():",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "module:src.context_manager",
+      "type": "module",
+      "label": "src.context_manager",
+      "language": "Python"
+    },
+    {
+      "id": "module:json",
+      "type": "module",
+      "label": "json",
+      "language": "Python"
+    },
+    {
+      "id": "module:src.llm_local",
+      "type": "module",
+      "label": "src.llm_local",
+      "language": "Python"
+    },
+    {
+      "id": "symbol:src/context_manager.py:ContextManager",
+      "type": "class",
+      "label": "ContextManager",
+      "lineno": 13,
+      "signature": "class ContextManager:",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "module:src.daily_ingestion",
+      "type": "module",
+      "label": "src.daily_ingestion",
+      "language": "Python"
+    },
+    {
+      "id": "module:ingestion.pipeline",
+      "type": "module",
+      "label": "ingestion.pipeline",
+      "language": "Python"
+    },
+    {
+      "id": "module:src.health",
+      "type": "module",
+      "label": "src.health",
+      "language": "Python"
+    },
+    {
+      "id": "module:asyncio",
+      "type": "module",
+      "label": "asyncio",
+      "language": "Python"
+    },
+    {
+      "id": "module:time",
+      "type": "module",
+      "label": "time",
+      "language": "Python"
+    },
+    {
+      "id": "module:requests",
+      "type": "module",
+      "label": "requests",
+      "language": "Python"
+    },
+    {
+      "id": "module:dataclasses",
+      "type": "module",
+      "label": "dataclasses",
+      "language": "Python"
+    },
+    {
+      "id": "module:typing",
+      "type": "module",
+      "label": "typing",
+      "language": "Python"
+    },
+    {
+      "id": "symbol:src/health.py:ProviderStatus",
+      "type": "class",
+      "label": "ProviderStatus",
+      "lineno": 23,
+      "signature": "class ProviderStatus:",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/health.py:RequestStats",
+      "type": "class",
+      "label": "RequestStats",
+      "lineno": 42,
+      "signature": "class RequestStats:",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/health.py:_ping_provider",
+      "type": "function",
+      "label": "_ping_provider",
+      "lineno": 52,
+      "signature": "def _ping_provider(provider_id: str, status: ProviderStatus, api_keys: list):",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/health.py:run_health_check",
+      "type": "function",
+      "label": "run_health_check",
+      "lineno": 87,
+      "signature": "def run_health_check():",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/health.py:health_ping_loop",
+      "type": "function",
+      "label": "health_ping_loop",
+      "lineno": 101,
+      "signature": "async def health_ping_loop():",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "module:src.ingestion.__init__",
+      "type": "module",
+      "label": "src.ingestion.__init__",
+      "language": "Python"
+    },
+    {
+      "id": "module:src.ingestion.database",
+      "type": "module",
+      "label": "src.ingestion.database",
+      "language": "Python"
+    },
+    {
+      "id": "module:duckdb",
+      "type": "module",
+      "label": "duckdb",
+      "language": "Python"
+    },
+    {
+      "id": "symbol:src/ingestion/database.py:get_duckdb_conn",
+      "type": "function",
+      "label": "get_duckdb_conn",
+      "lineno": 7,
+      "signature": "def get_duckdb_conn(db_path: str = \"data/usage.db\"):",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/ingestion/database.py:initialize_tables",
+      "type": "function",
+      "label": "initialize_tables",
+      "lineno": 24,
+      "signature": "def initialize_tables(conn):",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "module:src.ingestion.models",
+      "type": "module",
+      "label": "src.ingestion.models",
+      "language": "Python"
+    },
+    {
+      "id": "module:pydantic",
+      "type": "module",
+      "label": "pydantic",
+      "language": "Python"
+    },
+    {
+      "id": "module:datetime",
+      "type": "module",
+      "label": "datetime",
+      "language": "Python"
+    },
+    {
+      "id": "symbol:src/ingestion/models.py:UsageRecord",
+      "type": "class",
+      "label": "UsageRecord",
+      "lineno": 5,
+      "signature": "class UsageRecord(BaseModel):",
+      "receiver": null,
+      "bases": [
+        "BaseModel"
+      ],
+      "entrypoint": false
+    },
+    {
+      "id": "module:src.ingestion.pipeline",
+      "type": "module",
+      "label": "src.ingestion.pipeline",
+      "language": "Python"
+    },
+    {
+      "id": "module:pandas",
+      "type": "module",
+      "label": "pandas",
+      "language": "Python"
+    },
+    {
+      "id": "module:models",
+      "type": "module",
+      "label": "models",
+      "language": "Python"
+    },
+    {
+      "id": "module:database",
+      "type": "module",
+      "label": "database",
+      "language": "Python"
+    },
+    {
+      "id": "symbol:src/ingestion/pipeline.py:IngestionPipeline",
+      "type": "class",
+      "label": "IngestionPipeline",
+      "lineno": 12,
+      "signature": "class IngestionPipeline:",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "module:src.llm_cloud",
+      "type": "module",
+      "label": "src.llm_cloud",
+      "language": "Python"
+    },
+    {
+      "id": "module:tenacity",
+      "type": "module",
+      "label": "tenacity",
+      "language": "Python"
+    },
+    {
+      "id": "symbol:src/llm_cloud.py:CloudExhaustedException",
+      "type": "class",
+      "label": "CloudExhaustedException",
+      "lineno": 19,
+      "signature": "class CloudExhaustedException(Exception): pass",
+      "receiver": null,
+      "bases": [
+        "Exception"
+      ],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/llm_cloud.py:CloudPermanentError",
+      "type": "class",
+      "label": "CloudPermanentError",
+      "lineno": 20,
+      "signature": "class CloudPermanentError(Exception): pass",
+      "receiver": null,
+      "bases": [
+        "Exception"
+      ],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/llm_cloud.py:CloudTransientError",
+      "type": "class",
+      "label": "CloudTransientError",
+      "lineno": 21,
+      "signature": "class CloudTransientError(Exception): pass",
+      "receiver": null,
+      "bases": [
+        "Exception"
+      ],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/llm_cloud.py:estimate_tokens",
+      "type": "function",
+      "label": "estimate_tokens",
+      "lineno": 23,
+      "signature": "def estimate_tokens(prompt: str) -> int:",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/llm_cloud.py:estimate_tokens_from_messages",
+      "type": "function",
+      "label": "estimate_tokens_from_messages",
+      "lineno": 26,
+      "signature": "def estimate_tokens_from_messages(messages: list) -> int:",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/llm_cloud.py:query_cloud",
+      "type": "function",
+      "label": "query_cloud",
+      "lineno": 42,
+      "signature": "def query_cloud(prompt=None, messages=None):",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/llm_local.py:LocalUnavailableException",
+      "type": "class",
+      "label": "LocalUnavailableException",
+      "lineno": 42,
+      "signature": "class LocalUnavailableException(Exception):",
+      "receiver": null,
+      "bases": [
+        "Exception"
+      ],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/llm_local.py:LocalTransientError",
+      "type": "class",
+      "label": "LocalTransientError",
+      "lineno": 47,
+      "signature": "class LocalTransientError(Exception):",
+      "receiver": null,
+      "bases": [
+        "Exception"
+      ],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/llm_local.py:_query_local_with_retry",
+      "type": "function",
+      "label": "_query_local_with_retry",
+      "lineno": 62,
+      "signature": "def _query_local_with_retry(prompt, model):",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/llm_local.py:query_local",
+      "type": "function",
+      "label": "query_local",
+      "lineno": 136,
+      "signature": "def query_local(prompt, model=None):",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/llm_local.py:get_embedding",
+      "type": "function",
+      "label": "get_embedding",
+      "lineno": 158,
+      "signature": "def get_embedding(text, model=\"nomic-embed-text\"):",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "module:src.main",
+      "type": "module",
+      "label": "src.main",
+      "language": "Python"
+    },
+    {
+      "id": "symbol:src/main.py:start_chat",
+      "type": "function",
+      "label": "start_chat",
+      "lineno": 7,
+      "signature": "def start_chat():",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "module:copy",
+      "type": "module",
+      "label": "copy",
+      "language": "Python"
+    },
+    {
+      "id": "symbol:src/router.py:ground_messages",
+      "type": "function",
+      "label": "ground_messages",
+      "lineno": 37,
+      "signature": "def ground_messages(messages: list) -> list:",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/router.py:strip_boilerplate",
+      "type": "function",
+      "label": "strip_boilerplate",
+      "lineno": 47,
+      "signature": "def strip_boilerplate(messages: list) -> tuple:",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/router.py:apply_sliding_window",
+      "type": "function",
+      "label": "apply_sliding_window",
+      "lineno": 69,
+      "signature": "def apply_sliding_window(messages: list, max_window: int = MAX_WINDOW_SIZE) -> tuple:",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/router.py:classify_and_route",
+      "type": "function",
+      "label": "classify_and_route",
+      "lineno": 87,
+      "signature": "def classify_and_route(prompt, image_data=None, messages=None):",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "module:src.server",
+      "type": "module",
+      "label": "src.server",
+      "language": "Python"
+    },
+    {
+      "id": "module:fastapi",
+      "type": "module",
+      "label": "fastapi",
+      "language": "Python"
+    },
+    {
+      "id": "module:fastapi.responses",
+      "type": "module",
+      "label": "fastapi.responses",
+      "language": "Python"
+    },
+    {
+      "id": "symbol:src/server.py:_init_metrics_db",
+      "type": "function",
+      "label": "_init_metrics_db",
+      "lineno": 25,
+      "signature": "def _init_metrics_db():",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/server.py:_record_compaction_metrics",
+      "type": "function",
+      "label": "_record_compaction_metrics",
+      "lineno": 50,
+      "signature": "def _record_compaction_metrics(metrics: dict, latency: float, tier: str):",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/server.py:startup_event",
+      "type": "function",
+      "label": "startup_event",
+      "lineno": 81,
+      "signature": "async def startup_event():",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/server.py:get_dashboard",
+      "type": "function",
+      "label": "get_dashboard",
+      "lineno": 89,
+      "signature": "def get_dashboard():",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/server.py:ChatMessage",
+      "type": "class",
+      "label": "ChatMessage",
+      "lineno": 483,
+      "signature": "class ChatMessage(BaseModel):",
+      "receiver": null,
+      "bases": [
+        "BaseModel"
+      ],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/server.py:ChatCompletionRequest",
+      "type": "class",
+      "label": "ChatCompletionRequest",
+      "lineno": 487,
+      "signature": "class ChatCompletionRequest(BaseModel):",
+      "receiver": null,
+      "bases": [
+        "BaseModel"
+      ],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/server.py:chat_completions",
+      "type": "function",
+      "label": "chat_completions",
+      "lineno": 494,
+      "signature": "async def chat_completions(request: ChatCompletionRequest):",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/server.py:get_models",
+      "type": "function",
+      "label": "get_models",
+      "lineno": 586,
+      "signature": "async def get_models():",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/server.py:health_check",
+      "type": "function",
+      "label": "health_check",
+      "lineno": 593,
+      "signature": "async def health_check():",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/server.py:health_providers",
+      "type": "function",
+      "label": "health_providers",
+      "lineno": 597,
+      "signature": "async def health_providers():",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/server.py:get_efficiency_metrics",
+      "type": "function",
+      "label": "get_efficiency_metrics",
+      "lineno": 612,
+      "signature": "def get_efficiency_metrics(request: Request):",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "module:src.tests.eval_baseline",
+      "type": "module",
+      "label": "src.tests.eval_baseline",
+      "language": "Python"
+    },
+    {
+      "id": "symbol:src/tests/eval_baseline.py:print_header",
+      "type": "function",
+      "label": "print_header",
+      "lineno": 40,
+      "signature": "def print_header(title):",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/tests/eval_baseline.py:make_mock_post",
+      "type": "function",
+      "label": "make_mock_post",
+      "lineno": 45,
+      "signature": "def make_mock_post(scenario):",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/tests/eval_baseline.py:run_context_overflow_tests",
+      "type": "function",
+      "label": "run_context_overflow_tests",
+      "lineno": 122,
+      "signature": "def run_context_overflow_tests():",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/tests/eval_baseline.py:run_failover_tests",
+      "type": "function",
+      "label": "run_failover_tests",
+      "lineno": 181,
+      "signature": "def run_failover_tests():",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": false
+    },
+    {
+      "id": "symbol:src/tests/eval_baseline.py:main",
+      "type": "function",
+      "label": "main",
+      "lineno": 284,
+      "signature": "def main():",
+      "receiver": null,
+      "bases": [],
+      "entrypoint": true
+    }
+  ],
+  "edges": [
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "language:python",
+      "type": "uses_language"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "language:markdown",
+      "type": "uses_language"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "language:yaml",
+      "type": "uses_language"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "language:json",
+      "type": "uses_language"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "framework:python_(requirements.txt)",
+      "type": "uses_framework"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "framework:docker",
+      "type": "uses_framework"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "framework:docker_compose",
+      "type": "uses_framework"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "dir:data",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "dir:docs",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "dir:secrets",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "dir:src",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:.env.example",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:.gitignore",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:.webui_secret_key",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:docker-compose.yml",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:Dockerfile",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:HANDOVER.md",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:Hybrid-AI-Router.code-workspace",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:LICENSE",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:README.md",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:requirements.txt",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:retrospective.md",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:start_all.bat",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:start_telegram_bot.bat",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:data/.gitkeep",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:data/eval_baseline_results.json",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:data/pipeline_metrics.db",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:docs/assets/architecture_diagram_v2_2_0.png",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:docs/assets/architecture_diagram_v2_4_1.png",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:docs/assets/LLM-live-dashboard.png",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:docs/assets/terminal_output_ingestion.png",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:secrets/anthropic_api_key.txt",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:secrets/gemini_api_key.txt",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:secrets/gemini_api_key_2.txt",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:secrets/groq_api_key.txt",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:secrets/groq_api_key_2.txt",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:secrets/groq_api_key_3.txt",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:secrets/master_key.txt",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:secrets/nvidia_api_key.txt",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:secrets/openrouter_api_key.txt",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:secrets/telegram_bot_token.txt",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:src/.gitkeep",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:src/bot.py",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:src/config.py",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:src/context_manager.py",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:src/daily_ingestion.py",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:src/health.py",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:src/llm_cloud.py",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:src/llm_local.py",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:src/main.py",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:src/router.py",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:src/server.py",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:src/__init__.py",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:src/ingestion/database.py",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:src/ingestion/models.py",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:src/ingestion/pipeline.py",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:src/ingestion/__init__.py",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:D:\\Projects\\Hybrid-AI-Router",
+      "to": "file:src/tests/eval_baseline.py",
+      "type": "contains"
+    },
+    {
+      "from": "file:src/__init__.py",
+      "to": "module:src.__init__",
+      "type": "declares_package"
+    },
+    {
+      "from": "file:src/bot.py",
+      "to": "module:src.bot",
+      "type": "declares_package"
+    },
+    {
+      "from": "file:src/bot.py",
+      "to": "module:logging",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/bot.py",
+      "to": "module:base64",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/bot.py",
+      "to": "module:telegram",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/bot.py",
+      "to": "module:telegram.ext",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/bot.py",
+      "to": "module:src.router",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/bot.py",
+      "to": "module:src.config",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/bot.py",
+      "to": "symbol:src/bot.py:handle_message",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/bot.py",
+      "to": "symbol:src/bot.py:run_bot",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/config.py",
+      "to": "module:src.config",
+      "type": "declares_package"
+    },
+    {
+      "from": "file:src/config.py",
+      "to": "module:os",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/config.py",
+      "to": "module:sys",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/config.py",
+      "to": "module:logging",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/config.py",
+      "to": "symbol:src/config.py:get_secrets_list",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/config.py",
+      "to": "symbol:src/config.py:run_startup_checks",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/context_manager.py",
+      "to": "module:src.context_manager",
+      "type": "declares_package"
+    },
+    {
+      "from": "file:src/context_manager.py",
+      "to": "module:json",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/context_manager.py",
+      "to": "module:os",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/context_manager.py",
+      "to": "module:logging",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/context_manager.py",
+      "to": "module:src.llm_local",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/context_manager.py",
+      "to": "symbol:src/context_manager.py:ContextManager",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/daily_ingestion.py",
+      "to": "module:src.daily_ingestion",
+      "type": "declares_package"
+    },
+    {
+      "from": "file:src/daily_ingestion.py",
+      "to": "module:logging",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/daily_ingestion.py",
+      "to": "module:ingestion.pipeline",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/health.py",
+      "to": "module:src.health",
+      "type": "declares_package"
+    },
+    {
+      "from": "file:src/health.py",
+      "to": "module:asyncio",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/health.py",
+      "to": "module:logging",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/health.py",
+      "to": "module:time",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/health.py",
+      "to": "module:requests",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/health.py",
+      "to": "module:dataclasses",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/health.py",
+      "to": "module:typing",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/health.py",
+      "to": "module:src.config",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/health.py",
+      "to": "symbol:src/health.py:ProviderStatus",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/health.py",
+      "to": "symbol:src/health.py:RequestStats",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/health.py",
+      "to": "symbol:src/health.py:_ping_provider",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/health.py",
+      "to": "symbol:src/health.py:run_health_check",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/health.py",
+      "to": "symbol:src/health.py:health_ping_loop",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/ingestion/__init__.py",
+      "to": "module:src.ingestion.__init__",
+      "type": "declares_package"
+    },
+    {
+      "from": "file:src/ingestion/database.py",
+      "to": "module:src.ingestion.database",
+      "type": "declares_package"
+    },
+    {
+      "from": "file:src/ingestion/database.py",
+      "to": "module:duckdb",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/ingestion/database.py",
+      "to": "module:os",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/ingestion/database.py",
+      "to": "module:logging",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/ingestion/database.py",
+      "to": "symbol:src/ingestion/database.py:get_duckdb_conn",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/ingestion/database.py",
+      "to": "symbol:src/ingestion/database.py:initialize_tables",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/ingestion/models.py",
+      "to": "module:src.ingestion.models",
+      "type": "declares_package"
+    },
+    {
+      "from": "file:src/ingestion/models.py",
+      "to": "module:pydantic",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/ingestion/models.py",
+      "to": "module:datetime",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/ingestion/models.py",
+      "to": "module:typing",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/ingestion/models.py",
+      "to": "symbol:src/ingestion/models.py:UsageRecord",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/ingestion/pipeline.py",
+      "to": "module:src.ingestion.pipeline",
+      "type": "declares_package"
+    },
+    {
+      "from": "file:src/ingestion/pipeline.py",
+      "to": "module:time",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/ingestion/pipeline.py",
+      "to": "module:pandas",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/ingestion/pipeline.py",
+      "to": "module:datetime",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/ingestion/pipeline.py",
+      "to": "module:typing",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/ingestion/pipeline.py",
+      "to": "module:pydantic",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/ingestion/pipeline.py",
+      "to": "module:models",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/ingestion/pipeline.py",
+      "to": "module:database",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/ingestion/pipeline.py",
+      "to": "module:logging",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/ingestion/pipeline.py",
+      "to": "symbol:src/ingestion/pipeline.py:IngestionPipeline",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/llm_cloud.py",
+      "to": "module:src.llm_cloud",
+      "type": "declares_package"
+    },
+    {
+      "from": "file:src/llm_cloud.py",
+      "to": "module:logging",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/llm_cloud.py",
+      "to": "module:os",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/llm_cloud.py",
+      "to": "module:time",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/llm_cloud.py",
+      "to": "module:requests",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/llm_cloud.py",
+      "to": "module:tenacity",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/llm_cloud.py",
+      "to": "module:src.config",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/llm_cloud.py",
+      "to": "symbol:src/llm_cloud.py:CloudExhaustedException",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/llm_cloud.py",
+      "to": "symbol:src/llm_cloud.py:CloudPermanentError",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/llm_cloud.py",
+      "to": "symbol:src/llm_cloud.py:CloudTransientError",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/llm_cloud.py",
+      "to": "symbol:src/llm_cloud.py:estimate_tokens",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/llm_cloud.py",
+      "to": "symbol:src/llm_cloud.py:estimate_tokens_from_messages",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/llm_cloud.py",
+      "to": "symbol:src/llm_cloud.py:query_cloud",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/llm_local.py",
+      "to": "module:src.llm_local",
+      "type": "declares_package"
+    },
+    {
+      "from": "file:src/llm_local.py",
+      "to": "module:logging",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/llm_local.py",
+      "to": "module:time",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/llm_local.py",
+      "to": "module:requests",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/llm_local.py",
+      "to": "module:tenacity",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/llm_local.py",
+      "to": "module:src.config",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/llm_local.py",
+      "to": "symbol:src/llm_local.py:LocalUnavailableException",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/llm_local.py",
+      "to": "symbol:src/llm_local.py:LocalTransientError",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/llm_local.py",
+      "to": "symbol:src/llm_local.py:_query_local_with_retry",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/llm_local.py",
+      "to": "symbol:src/llm_local.py:query_local",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/llm_local.py",
+      "to": "symbol:src/llm_local.py:get_embedding",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/main.py",
+      "to": "module:src.main",
+      "type": "declares_package"
+    },
+    {
+      "from": "file:src/main.py",
+      "to": "module:sys",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/main.py",
+      "to": "module:logging",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/main.py",
+      "to": "module:src.router",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/main.py",
+      "to": "symbol:src/main.py:start_chat",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/router.py",
+      "to": "module:src.router",
+      "type": "declares_package"
+    },
+    {
+      "from": "file:src/router.py",
+      "to": "module:copy",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/router.py",
+      "to": "module:logging",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/router.py",
+      "to": "module:src.llm_cloud",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/router.py",
+      "to": "symbol:src/router.py:ground_messages",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/router.py",
+      "to": "symbol:src/router.py:strip_boilerplate",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/router.py",
+      "to": "symbol:src/router.py:apply_sliding_window",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/router.py",
+      "to": "symbol:src/router.py:classify_and_route",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "module:src.server",
+      "type": "declares_package"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "module:os",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "module:time",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "module:asyncio",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "module:logging",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "module:duckdb",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "module:fastapi",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "module:fastapi.responses",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "module:pydantic",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "module:typing",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "module:src.router",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "module:src.health",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "symbol:src/server.py:_init_metrics_db",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "symbol:src/server.py:_record_compaction_metrics",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "symbol:src/server.py:startup_event",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "symbol:src/server.py:get_dashboard",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "symbol:src/server.py:ChatMessage",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "symbol:src/server.py:ChatCompletionRequest",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "symbol:src/server.py:chat_completions",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "symbol:src/server.py:get_models",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "symbol:src/server.py:health_check",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "symbol:src/server.py:health_providers",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/server.py",
+      "to": "symbol:src/server.py:get_efficiency_metrics",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/tests/eval_baseline.py",
+      "to": "module:src.tests.eval_baseline",
+      "type": "declares_package"
+    },
+    {
+      "from": "file:src/tests/eval_baseline.py",
+      "to": "module:os",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/tests/eval_baseline.py",
+      "to": "module:sys",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/tests/eval_baseline.py",
+      "to": "module:time",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/tests/eval_baseline.py",
+      "to": "module:json",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/tests/eval_baseline.py",
+      "to": "module:logging",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/tests/eval_baseline.py",
+      "to": "module:datetime",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/tests/eval_baseline.py",
+      "to": "module:src.router",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/tests/eval_baseline.py",
+      "to": "module:src.llm_cloud",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/tests/eval_baseline.py",
+      "to": "module:requests",
+      "type": "imports"
+    },
+    {
+      "from": "file:src/tests/eval_baseline.py",
+      "to": "symbol:src/tests/eval_baseline.py:print_header",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/tests/eval_baseline.py",
+      "to": "symbol:src/tests/eval_baseline.py:make_mock_post",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/tests/eval_baseline.py",
+      "to": "symbol:src/tests/eval_baseline.py:run_context_overflow_tests",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/tests/eval_baseline.py",
+      "to": "symbol:src/tests/eval_baseline.py:run_failover_tests",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/tests/eval_baseline.py",
+      "to": "symbol:src/tests/eval_baseline.py:main",
+      "type": "defines"
+    },
+    {
+      "from": "file:src/tests/eval_baseline.py",
+      "to": "symbol:src/tests/eval_baseline.py:main",
+      "type": "entrypoint"
+    },
+    {
+      "from": "file:src/tests/eval_baseline.py",
+      "to": "module:src.tests.eval_baseline",
+      "type": "tests"
+    }
+  ]
+}

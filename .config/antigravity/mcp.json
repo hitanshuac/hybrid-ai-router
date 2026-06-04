@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "jCodeMunch": {
+      "command": "node",
+      "args": [
+        "path/to/jCodeMunch/server.js"
+      ],
+      "env": {}
+    }
+  }
+}

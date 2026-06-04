@@ -1,0 +1,20 @@
+{
+  "refresh_run_id": "20260517T161955948528Z",
+  "generated_at": "2026-05-17T16:19:55.948528+00:00",
+  "overall_status": "success",
+  "stages": {
+    "scan": "success",
+    "conventions": "success",
+    "structure": "success",
+    "knowledge_graph": "success",
+    "indexes": "success",
+    "module_docs": "success",
+    "git_insights": "success",
+    "module_registry": "success",
+    "gitnexus": "skipped"
+  },
+  "modules": {
+    "src": "success"
+  },
+  "failures": []
+}

@@ -1,194 +1,41 @@
----
-title: Hybrid AI Router
-emoji: 🌊
-colorFrom: blue
-colorTo: indigo
-sdk: docker
-app_port: 7860
-pinned: false
----
+# 🌌 Antigravity Base Agentic Environment
 
-# 🚀 Hybrid AI Router: Agentic Pipeline (v3.0.0)
+![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=flat&logo=fastapi)
+![DuckDB](https://img.shields.io/badge/DuckDB-FFF000?style=flat&logo=duckdb&logoColor=black)
+![Architecture](https://img.shields.io/badge/Architecture-Split--Plane-indigo)
 
-![Architecture Diagram](docs/assets/architecture_diagram_v3_0_0.png)
+## 📖 Overview
+This repository serves as a powerful, extensible **Base Agentic Environment** built on the Antigravity framework. It utilizes a strict **Split-Plane Architecture** that separates the human-defined control plane (`.agents/`) from the system-managed data and state plane (`.antigravity/`). This ensures deterministic AI execution, zero-hallucination context management, and enterprise-grade reliability.
 
-A high-performance, SRE-grade API Gateway and Data Engineering pipeline. This system maximizes cloud resilience through a multi-provider waterfall cascade, enforces strict behavioral personas, and maintains absolute data integrity and token efficiency via a dedicated **Telemetry & Compaction Plane**.
+## 🚀 Dynamic Skill Integration
+This workspace is designed to be highly composable. **As new skills and agents are developed in separate, isolated projects, they are continuously imported into this base environment.** This aggregation allows the environment to grow exponentially more powerful over time, consolidating isolated intelligence into a single, unified operating system.
 
----
+## 🛠️ Current Capabilities
 
-## 🛠️ System Architecture
+### Governance Rules (`.agents/rules/`)
+* **12-Factor Governance:** Enforces stateless processes and BYOK configuration.
+* **Context Compaction & Router Alignment:** Strict token conservation and payload mutation for Hybrid AI.
+* **Data Validation:** Idempotent DLQ routing via Pydantic.
+* **SQL Standards:** Write-Ahead Logging and `INSERT OR REPLACE` idempotency via DuckDB.
+* **Hugging Face Standards:** Zero-cost offsite WebUI routing deployment constraints.
 
-Built for **Bulletproof Reliability**, the system enforces strict SRE guardrails via the **Agentic Control Plane** and handles payloads through an optimized, zero-overhead execution pipeline.
+### Specialized Skills (`.agents/skills/`)
+* **DuckDB Optimizer:** Configures DuckDB for maximum reliability, data integrity, and memory safety.
+* **Pipeline Architect:** Designs minimalist, fault-tolerant ETL pipelines using standard Python.
 
+### Automated Workflows (`.agents/workflows/`)
+* **CI/CD & Sync:** `master-sync`, `update-docs`, `publish-showcase`, `deploy-hf-production`, `secure-checkpoint`
+* **Data Engineering:** `daily-ingestion`, `build-etl`, `error-recovery`
+* **Bootstrapping:** `bootstrap`, `git-discovery-preflight`, `generate-readme`
 
-```mermaid
-graph TD
-    %% Styling
-    classDef frontend fill:#38bdf8,stroke:#0f172a,stroke-width:2px,color:#0a0e1a;
-    classDef backend fill:#818cf8,stroke:#0f172a,stroke-width:2px,color:#0a0e1a;
-    classDef router fill:#fbbf24,stroke:#0f172a,stroke-width:2px,color:#0a0e1a;
-    classDef db fill:#4ade80,stroke:#0f172a,stroke-width:2px,color:#0a0e1a;
-    classDef provider fill:#1e293b,stroke:#38bdf8,stroke-width:2px,color:#f1f5f9;
-
-    %% Frontends
-    subgraph Client ["Client Interfaces"]
-        SPA["💻 SPA Web Console (Chat & Dashboard)"]:::frontend
-    end
-
-    %% Backend Server
-    subgraph Server ["Hugging Face Space (Port 7860)"]
-        API["⚡ FastAPI Application"]:::backend
-        CB["🛡️ SRE Circuit Breaker & Compaction"]:::backend
-        
-        API --> CB
-        
-        %% Database Layer
-        subgraph Persistence ["Data Layer"]
-            DuckDB[("🦆 DuckDB (Telemetry)")]:::db
-            Chroma[("🧠 ChromaDB (RAG Vector State)")]:::db
-        end
-        CB -.->|"Logs metrics"| DuckDB
-        CB -.->|"Context Search"| Chroma
-        
-        %% Cascade Router
-        subgraph Cascade ["9-Tier Hybrid Cascade Engine"]
-            Tier1["1. Groq (Llama-3-70B)"]:::provider
-            Tier2["2. Groq (Mixtral)"]:::provider
-            Tier3["3. AI Studio (Gemini-1.5-Flash)"]:::provider
-            Tier4["4. OpenRouter (Qwen-2.5-Coder)"]:::provider
-            Tier5["5. OpenRouter (Llama-3-8B-Free)"]:::provider
-            Tier6["6. OpenRouter (Phi-3-128k-Free)"]:::provider
-            Tier7["7. NVIDIA NIM (Llama-3)"]:::provider
-            Tier8["8. NVIDIA NIM (Mistral-Nemo)"]:::provider
-            Tier9["9. NVIDIA NIM (Qwen-2.5-72B)"]:::provider
-            
-            Tier1 -->|"Fallback"| Tier2
-            Tier2 -->|"Fallback"| Tier3
-            Tier3 -->|"Fallback"| Tier4
-            Tier4 -->|"Fallback"| Tier5
-            Tier5 -->|"Fallback"| Tier6
-            Tier6 -->|"Fallback"| Tier7
-            Tier7 -->|"Fallback"| Tier8
-            Tier8 -->|"Fallback"| Tier9
-        end
-        
-        CB -->|"Routes Payload"| Cascade
-    end
-
-    %% Wiring
-    SPA -->|"GET / "| API
-    SPA -->|"POST /v1/chat/completions "| API
-    SPA -->|"GET /api/v1/metrics/efficiency "| API
-
+## 📂 Directory Structure
+```text
+.
+├── .agents/            # The Control Plane: Rules, Skills, and Workflows (Human Edited)
+├── .antigravity/       # The Data Plane: System metrics, graphs, and cache (System Managed)
+├── .config/            # Environment configurations and MCP integrations
+├── src/                # Application source code (FastAPI, Routers)
+├── data/               # DuckDB metrics, Quarantine DLQs, and Parquet files
+└── hf-webui/           # Hugging Face Spaces frontend deployment configurations
 ```
-
-### The 5-Step Compaction & Routing Sequence
-Every request array flowing through the gateway is processed through five immutable stages to eliminate context drift and minimize token wastage:
-
-1. **Deep Copy**: Deep copies incoming message payloads, ensuring caller data is never mutated.
-2. **Grounding**: Ephemerally injects the canonical `SYSTEM_GROUNDING_PROMPT` at index 0 of every outbound payload.
-3. **Prefix Stripping**: Scans and strips 11 common AI conversational filler prefixes (e.g., `"Sure! "`, `"Great question! "`) from assistant history messages.
-4. **Sliding Window**: Enforces a strict **10-message sliding window cap** (retaining index 0's grounding prompt and the 9 most recent turns) to prevent payload bloat.
-5. **Admission Control**: Evaluates the payload using a pre-flight heuristic (`len(prompt) // 4`). If the estimated tokens exceed a provider's limit, the model is instantly bypassed locally, preventing network latency and `400 Bad Request` exceptions.
-
----
-
-## 🛡️ SRE Frontend Guardrails & Open WebUI Integration
-
-The Router acts as a robust upstream provider for **Open WebUI**, enforcing strict operational stability across the stack:
-- **Upstream Validation Mocking (`/v1/models`)**: Exposes a fallback model registry to gracefully satisfy Open WebUI's initialization checks and prevent `HTTP 404 text/html` JSON decoding crashes.
-- **Global Exception Sanitization**: A top-level FastAPI exception handler wraps all fatal unhandled crashes into structured `500 Internal Server Error` JSON responses, guaranteeing zero stacktrace leakage to the client or production logs.
-- **Backend Quarantine**: The Open WebUI Hugging Face Space Docker container is strictly configured (`ENABLE_OLLAMA_API="False"`) to sever DNS resolution to non-existent local Ollama endpoints, instantly neutralizing connection timeout retry storms.
-
----
-
-## 📊 Real-Time SRE Telemetry Mandate
-
-To guarantee operational transparency and prevent architectural guesswork, the router enforces a strict **Telemetry Mandate** running on the request hot path.
-
-### 1. DuckDB Telemetry Ingestion
-Every completion logs comprehensive metrics directly to a local high-performance DuckDB instance (`data/pipeline_metrics.db`):
-- **Token Efficiency tracking**: Evaluates `raw_tokens`, `compact_tokens`, total `tokens_saved`, and `savings_pct`.
-- **Structural offsets**: Logs `messages_dropped` and `prefixes_stripped`.
-- **System latency**: Captures request `latency_sec` and the successfully resolving cascade `tier`.
-- **DuckDB Optimizer configuration**: The DB connection runs with Write-Ahead Logging (WAL) enabled and is strictly capped at a `256MB` RAM limit (`PRAGMA memory_limit='256MB'`) to guarantee memory safety.
-
-### 2. Live Efficiency Endpoint
-The system exposes real-time telemetry metrics via:
-* **`GET /api/v1/metrics/efficiency`**: Returns aggregated pipeline statistics (total savings, average savings %, average latency) and a log of the last 10 requests.
-
-### 3. Fail-Safe Quarantining Protocols
-In accordance with our strict data engineering standards:
-- **Non-Blocking Validation**: Pydantic schemas validate all payloads without blockages.
-- **Parquet Quarantine Isolation**: Any corrupted or malformed data that fails schema validation is immediately caught and routed to isolated `data/quarantine_*.parquet` files. This isolates bad records without interrupting active pipeline ingestion or raising uncaught runtime exceptions.
-
-![Terminal Output Ingestion](docs/assets/terminal_output_ingestion.png)
-
-### 4. Non-Blocking SRE Threadpool & Content-Negotiation Plane
-To achieve absolute resilience and zero main-thread freezing:
-- **FastAPI Threadpool Routing**: All telemetry-producing endpoints (`/dashboard` and `/api/v1/metrics/efficiency`) are served via standard synchronous `def` handlers. This causes FastAPI to automatically run them on Starlette's background threadpool, offloading synchronous DuckDB file I/O operations from the main ASGI event loop. This guarantees non-blocking execution of the LLM pipeline and completely eliminates connection resets (`WinError 10054`) under high load.
-- **HTTP Content Negotiation**: The `/api/v1/metrics/efficiency` endpoint implements content negotiation. It seamlessly responds with structured compaction JSON to machine clients (`Accept: application/json` or `*/*`), while detecting web browser traffic (`Accept: text/html`) and instantly redirecting users to the visual real-time `/dashboard`.
-
-
----
-
-## 🚀 First-Run Setup (The "Login")
-
-### 1. Configure Secrets
-Provide API keys in the `secrets/` directory:
-- `secrets/groq_api_key.txt`
-- `secrets/openrouter_api_key.txt`
-- `secrets/nvidia_api_key.txt`
-- `secrets/gemini_api_key.txt`
-
-### 2. Launch System
-- **`start_all.bat`**: Boots the Production FastAPI Server, Telemetry Dashboard, and Open WebUI instance.
-- **`docker-compose up`**: Alternately orchestrates the entire ecosystem in Docker containers.
-- **`src/tests/eval_baseline.py`**: Runs baseline performance evaluations, verifying the cascade, overflow pre-flight checks, and compaction logic.
-
-### 3. Open WebUI Login (The Face)
-To interact with the router via a sleek ChatGPT-like conversational interface:
-- **WebUI Interface**: Navigate to **[http://localhost:8080](http://localhost:8080)** (or **[http://localhost:3000](http://localhost:3000)** if running via Docker Compose).
-- **Account Setup**: If launching for the first time, click **Sign Up** to create your local admin login credentials (this runs fully locally on your machine).
-- **LLM Pipeline Connection**: The WebUI is pre-configured to communicate with the router's backend API base URL **`http://localhost:8000/v1`**. *Note: Opening `http://localhost:8000/v1` directly in a browser is expected to return a backend details response, as it is a headless API connection point for client libraries.*
-
-### 4. Monitor Efficiency & Telemetry
-- **Live SRE Dashboard (User-Facing)**: Open **[http://localhost:8000/dashboard](http://localhost:8000/dashboard)** (or simply **[http://localhost:8000](http://localhost:8000)**) in your browser. This displays a beautiful real-time UI mapping the status of your API key pools, provider latencies, and request counts.
-- **Telemetry API (Raw JSON)**: Query **`http://localhost:8000/api/v1/metrics/efficiency`**. *Note: Opening this URL directly in a web browser will automatically redirect you to the visual `/dashboard` due to HTTP Content Negotiation. To retrieve the raw JSON, query it programmatically or via a CLI tool like `curl`.*
-```bash
-curl http://localhost:8000/api/v1/metrics/efficiency
-```
-
-![LLM Live Dashboard](docs/assets/LLM-live-dashboard.png)
-
----
-
-## 🔍 Project Forensic Audit
-This repository maintains an active **[RETROSPECTIVE.md](retrospective.md)**—a comprehensive historical log of all failures, architectural pivots, and core systems-engineering lessons. Complexity is treated as debt; all failures inform a permanent protocol update.
-
----
-
-**Built for Engineering Resilience. No Complexity. Pure Telemetry. Maximum Uptime.**
-
----
-
-## 🗺️ System Interaction & Flow
-
-```mermaid
-graph TD
-    Client[Client Request] --> Router[src/router.py: classify_and_route]
-    
-    subgraph Pipeline [5-Step Compaction Pipeline]
-        Router --> Step1[1. Deep Copy]
-        Step1 --> Step2[2. Ephemeral Grounding]
-        Step2 --> Step3[3. Boilerplate Prefix Stripping]
-        Step3 --> Step4[4. Sliding Window Slicing]
-        Step4 --> Step5[5. Admission Control Heuristic]
-    end
-    
-    Step5 --> Cascade[9-Tier Cloud Cascade Engine]
-    Cascade --> Return[Client Response]
-    
-    Return --> Telemetry[DuckDB Telemetry Engine]
-```
-
