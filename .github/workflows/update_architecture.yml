@@ -22,11 +22,11 @@ jobs:
         uses: mermaid-js/mermaid-cli@v3.0.0
         with:
           input: README.md
-          output: docs/assets/system_architecture.png
+          output: docs/assets/architecture_diagram_v3_0_0.png
 
       - name: Commit and Push Updated Architecture Image
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add docs/assets/system_architecture.png
+          git add docs/assets/architecture_diagram_v3_0_0.png
           git diff --cached --quiet || (git commit -m "docs: auto-generate architecture diagram from mermaid" && git push)
