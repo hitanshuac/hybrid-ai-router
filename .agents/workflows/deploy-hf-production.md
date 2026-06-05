@@ -16,17 +16,17 @@ This workflow orchestrates the entire deployment pipeline. Every time the code i
    - `docs/`
    - `.agents/rules/`
    - `.antigravity/conventions.md`
-3. Update version designations in all files to the current release (e.g., `v3.0.0`).
+3. Update version designations in all files to the current release (e.g., `<current_version>`).
 
 ## Step 3: Showcase & Flow Asset Updates
-1. Ensure the system architecture showcase image (`docs/assets/architecture_diagram_v3_0_0.png`) represents the current cascade engine (10-Tier Cascade, SPA web client, webhook bot). If the version has changed, generate a new image and place it in the assets directory.
+1. Ensure the system architecture showcase image (`docs/assets/architecture_diagram.png`) represents the current cascade engine (10-Tier Cascade, SPA web client, webhook bot). If the version has changed, generate a new image and place it in the assets directory.
 2. Verify that the Mermaid technical flow diagram in `README.md` is aligned with the codebase's cascading fallback logic.
 
 ## Step 4: Publish Showcase on GitHub (Call Sub-Workflow)
 1. Run the `publish-showcase.md` workflow.
 2. This will synthesize `retrospective.md`, `walkthrough.md`, and `implementation_plan.md` into `README.md`.
 3. In `README.md`, ensure **both** the recruiter-facing static PNG and the technical Mermaid flow are visible:
-   - Recruiter Showcase: `![Architecture Diagram](docs/assets/architecture_diagram_v3_0_0.png)` at the top of the file.
+   - Recruiter Showcase: `![Architecture Diagram](docs/assets/architecture_diagram.png)` at the top of the file.
    - Technical Flowchart: Mermaid diagram in the interaction section.
 4. Stage, commit, and push all modifications to GitHub first.
 

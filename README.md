@@ -5,7 +5,7 @@
 ![DuckDB](https://img.shields.io/badge/DuckDB-FFF000?style=flat&logo=duckdb&logoColor=black)
 ![Architecture](https://img.shields.io/badge/Architecture-Split--Plane-indigo)
 
-![Architecture Diagram](docs/assets/architecture_diagram_v3_0_0.png)
+![Architecture Diagram](docs/assets/architecture_diagram.png)
 
 ## 📖 Overview
 This repository serves as a powerful, extensible **Base Agentic Environment** built on the Antigravity framework. It utilizes a strict **Split-Plane Architecture** that separates the human-defined control plane (`.agents/`) from the system-managed data and state plane (`.antigravity/`). This ensures deterministic AI execution, zero-hallucination context management, and enterprise-grade reliability.
