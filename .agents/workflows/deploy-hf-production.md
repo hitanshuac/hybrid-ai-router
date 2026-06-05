@@ -16,7 +16,7 @@ This workflow orchestrates the entire deployment pipeline. Every time the code i
    - `docs/`
    - `.agents/rules/`
    - `.antigravity/conventions.md`
-3. Update version designations in all files to the current release (e.g., `<current_version>`).
+3. Update version designations in all files to the current release (e.g., `v1.0.0`).
 
 ## Step 3: Showcase & Flow Asset Updates
 1. Ensure the system architecture showcase image (`docs/assets/architecture_diagram.png`) represents the current cascade engine (10-Tier Cascade, SPA web client, webhook bot). If the version has changed, generate a new image and place it in the assets directory.

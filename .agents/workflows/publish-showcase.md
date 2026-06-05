@@ -13,7 +13,7 @@ description: Automatically synthesize project logs, verify show-case assets, and
 5. Once approved, stage the files:
    - Run `git add README.md retrospective.md walkthrough.md docs/assets/architecture_diagram.png`
 6. Commit the changes:
-   - Run `git commit -m "docs: sync <current_version> showcase documentation and SRE assets"`
+   - Run `git commit -m "docs: sync v1.0.0 showcase documentation and SRE assets"`
 7. Push to the main GitHub repository:
    - Run `git push origin main`
 8. Confirm to the user that the showcase and SRE metrics are live on GitHub.

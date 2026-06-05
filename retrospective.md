@@ -1,4 +1,4 @@
-# Retrospective: <current_version> Agentic Capabilities
+# Retrospective: v1.0.0 Agentic Capabilities
 
 ## What Went Well
 - Successfully built a rigorous Dual-Pronged Evaluation Suite, utilizing both deterministic Python code tests and an LLM-as-a-Judge API.
